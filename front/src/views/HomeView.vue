@@ -3,7 +3,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import NavHeader from '@/components/NavHeader.vue'
 
 export default {
@@ -13,3 +12,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+</style>

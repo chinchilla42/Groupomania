@@ -17,6 +17,7 @@
 }
 #app{
   font-family: Lato, Helvetica, Arial, sans-serif;
+  color : #4E5166;
 }
 body {
   margin: auto;

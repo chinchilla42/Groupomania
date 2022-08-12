@@ -1,5 +1,5 @@
 <template>
-    <div container>
+    <div class="container">
         <NavHeader />
         <main>
             <div class="connection">
@@ -9,8 +9,9 @@
                     <input type="email" placeholder="nom@groupomania.fr">
                     <label>Mot de passe</label>
                     <input type="password">
-                    <button type="submit">Connexion</button>
+                    <button type="button" @click="login">Connexion</button>
                 </form>
+                <p>Pas encore membre ? <router-link to="/signup">Créez un compte !</router-link></p>
             </div>
         </main>
    </div> 
@@ -21,14 +22,23 @@ import NavHeader from '@/components/NavHeader.vue'
 
 export default {
     name: "SignIn",
-    components: { NavHeader }
+    components: { NavHeader },
+        data(){
+        return {
+            input:{
+                email: "",
+                password: "",
+            }
+        }
+    },
+    methods: {
+        login() {
+            this.$router.push('/HomePage')
+        }
+    }
 }
 </script> 
 
 <style>
-main {
-    display: flex;
-    flex-direction: column;
-}
 
 </style>

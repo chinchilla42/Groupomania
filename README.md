@@ -1,5 +1,5 @@
 cd ./front
-nmp serve
+nmp run serve
 
 cd ./back 
 node server

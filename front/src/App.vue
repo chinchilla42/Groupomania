@@ -19,7 +19,11 @@
   font-family: Lato, Helvetica, Arial, sans-serif;
   color : #4E5166;
 }
+html {
+  height: 100%;
+}
 body {
-  margin: auto;
+  margin: 0px;
+  height: 100%;
 }
 </style>

@@ -5,14 +5,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 /* Access to file system path */
-//const path = require('path');
+const path = require('path');
 
 /* Create Express app */
 const app = express();
 
 /* Import routes */
 const userRoutes = require('./routes/user');
-//const sauceRoutes = require('./routes/posts');
+const postRoutes = require('./routes/post');
 
 /* Create express app and call dependancies */
 app.use(express.json());

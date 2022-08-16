@@ -47,7 +47,7 @@ export default {
                     'Content-Type': 'application/json'
                 }
             };
-            fetch('http://localhost:3000/api/user/login', options)
+            fetch('http://localhost:3000/api/auth/login', options)
                 .then(res => res.json())
                 .then(res => {
                     if (res.userId && res.token) {

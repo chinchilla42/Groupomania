@@ -64,7 +64,7 @@ export default {
                 },
                 body: JSON.stringify(userData),
             };
-            fetch("http://localhost:3000/api/user/signup", options)
+            fetch("http://localhost:3000/api/auth/signup", options)
 
                 .then((res) => res.json())
                 .then(() => {

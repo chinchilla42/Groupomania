@@ -5,7 +5,7 @@
     <div class="create-post">
       <h2>Créer une publication</h2>
       <textarea wrap="soft" rows="1"  placeholder="Quoi de neuf ?"></textarea>
-      <label for="image">Ajouter une image</label>
+      <label for="image"><i class="fas fa-file-image"></i> Ajouter une image</label>
       <input
               type="file"
               id="image"
@@ -36,7 +36,7 @@
             occaecat cupidatat non proident, sunt in 
             culpa qui officia deserunt mollit anim id 
             est laborum.</p>
-          <div class="like"><i class="fas fa-thumbs-up"></i></div>
+          <div class="like"><i class="fas fa-thumbs-up"></i> J'aime</div>
           <div class="change">
           <div class="modify-post"><p><i class="fas fa-pen"></i> Modifier</p></div>
           <div class="delete-post"><p><i class="fas fa-trash"></i> Supprimer</p></div>
@@ -75,7 +75,7 @@ export default {
   name: 'HomePAge',
   components: {
     NavHeader,
-  }
+  },
 }
 </script>
 
@@ -123,6 +123,7 @@ textarea {
   width: auto;
   justify-content: space-around;
   border-top: solid 1px;
+
 }
 
 .content p{
@@ -130,6 +131,25 @@ textarea {
   margin: 5px;
 }
 
+.like, .modify-post, .delete-post{
+  color: #FD2D01;
+  padding: 5px;
+
+}
+
+.like{
+  text-align: right;
+  padding-bottom: 10px;
+}
+
+.fas{
+    color: #FFD7D7;
+  padding-right: 5px;
+}
+.fas:hover{
+    color: #FD2D01;
+
+}
 
 @media (max-width: 767px) {
     body{

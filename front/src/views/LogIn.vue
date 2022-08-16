@@ -11,10 +11,11 @@
                     <input type="password">
                     <button type="button" @click="login">Connexion</button>
                 </form>
-                <p>Pas encore membre ? <router-link to="/signup">Créez un compte !</router-link></p>
+                <p>Pas encore membre ? <router-link to="/signup">Créez un compte !</router-link>
+                </p>
             </div>
         </main>
-   </div> 
+    </div>
 </template>
 
 <script>
@@ -23,9 +24,9 @@ import NavHeader from '@/components/NavHeader.vue'
 export default {
     name: "SignIn",
     components: { NavHeader },
-        data(){
+    data() {
         return {
-            input:{
+            input: {
                 email: "",
                 password: "",
             }
@@ -33,12 +34,36 @@ export default {
     },
     methods: {
         login() {
-            this.$router.push('/HomePage')
-        }
+            const userData =
+            {
+                "email": this.input.email,
+                "password": this.input.password
+            }
+            const options =
+            {
+                method: 'POST',
+                body: JSON.stringify(userData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            fetch('http://localhost:3000/api/user/login', options)
+                .then(res => res.json())
+                .then(res => {
+                    if (res.userId && res.token) {
+                       
+                        this.$router.push('/HomePage')
+                    }
+                    else {
+                        alert("Identifiants incorrects");
+                    }
+                })
+                .catch(error => console.log(error))
+        },
+
     }
 }
 </script> 
 
 <style>
-
 </style>

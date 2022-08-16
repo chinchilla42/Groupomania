@@ -3,9 +3,10 @@
         <img src="../assets/icon-left-font.png" alt="Logo de Groupomania">
         <nav>
             <ul>
+                
+                <li id="test"><i class="fas fa-power-off"></i> Déconnexion</li>    
                 <li><router-link to="/signup">Créer un compte</router-link></li>
                 <li><router-link to="/">Se connecter</router-link></li>
-                <li id="test"><i class="fas fa-power-off"></i> Déconnexion</li>    
             </ul>
         </nav>
     </header>

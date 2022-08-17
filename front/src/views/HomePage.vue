@@ -1,3 +1,14 @@
+<script>
+import NavHeader from '@/components/NavHeader.vue'
+
+export default {
+  name: 'HomePAge',
+  components: {
+    NavHeader,
+  },
+}
+</script>
+
 <template>
   <div class="container">
     <NavHeader />
@@ -68,16 +79,7 @@
   </div>
 </template>
 
-<script>
-import NavHeader from '@/components/NavHeader.vue'
 
-export default {
-  name: 'HomePAge',
-  components: {
-    NavHeader,
-  },
-}
-</script>
 
 <style>
 

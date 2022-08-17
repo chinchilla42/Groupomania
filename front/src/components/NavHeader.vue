@@ -1,24 +1,28 @@
+<script>
+export default {
+	name: 'NavHeader',
+    methods: {
+        logout(){
+            sessionStorage.clear();
+            this.$router.push('/');
+        }
+
+    }
+}
+</script>
+
 <template>
     <header>
         <img src="../assets/icon-left-font.png" alt="Logo de Groupomania">
         <nav>
-            <ul>
-                
-                <li id="test"><i class="fas fa-power-off"></i> Déconnexion</li>    
+            <ul> 
+                <li><router-link to="/" @click="logout()"><i class="fas fa-power-off"></i> Déconnexion</router-link></li>    
                 <li><router-link to="/signup">Créer un compte</router-link></li>
                 <li><router-link to="/">Se connecter</router-link></li>
             </ul>
         </nav>
     </header>
 </template>
-
-<script>
-export default {
-	name: 'NavHeader'
-}
-</script>
-
-
 
 <style>
 header{

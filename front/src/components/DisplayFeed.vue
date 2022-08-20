@@ -1,6 +1,43 @@
 <script>
 export default {
-	name: 'DisplayFeed'
+	name: 'DisplayFeed',
+	data() {
+		return {
+			posts: [],
+		};
+	},
+	created() {
+		const options =
+		{
+			method: 'GET',
+			headers:
+			{
+				'Authorization': 'Bearer ' + localStorage.getItem("token"),
+			}
+		};
+		fetch('http://localhost:3000/groupomania/post', options)
+			.then((response) => response.json())
+			.then((response) => {
+				if (response.error) {
+					return this.$router.push("/");
+				}
+				this.posts = response.post;
+				console.log("check")
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	},
+	// methods: {
+	// 	displayPosts() {
+	// 		products.forEach(product => { }
+	// 		)
+	// 	}
+	// }
+
+
+
+
 }
 </script>
 
@@ -8,24 +45,13 @@ export default {
 	<div class="feeds">
 		<h2>Votre fil d'actualité</h2>
 		<div class="feeds_post">
-			<div class="content">
-				<div class="author">
+			<div v-for="post in posts" :key="post.id" class="content">
+				<div class="content-author">
 					<p>Nom a dit : </p>
 				</div>
-				<div class="image">
+				<div class="content-image">
 				</div>
-				<p>Lorem ipsum dolor sit amet, consectetur
-					dipiscing elit, sed do eiusmod tempor
-					incididunt ut labore et dolore magna
-					aliqua. Ut enim ad minim veniam, quis
-					nostrud exercitation ullamco laboris nisi
-					ut aliquip ex ea commodo consequat.
-					Duis aute irure dolor in reprehenderit
-					in voluptate velit esse cillum dolore eu
-					fugiat nulla pariatur. Excepteur sint
-					occaecat cupidatat non proident, sunt in
-					culpa qui officia deserunt mollit anim id
-					est laborum.</p>
+				<p class="content-text">{{post.content}}</p>
 				<div class="like"><i class="fas fa-thumbs-up"></i> J'aime</div>
 				<div class="change">
 					<div class="modify-post">

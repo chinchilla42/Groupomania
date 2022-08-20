@@ -33,7 +33,7 @@ export default {
                 },
                 body: JSON.stringify(userData),
             };
-            fetch("http://localhost:3000/api/auth/signup", options)
+            fetch("http://localhost:3000/groupomania/auth/signup", options)
 
                 .then(res => res.json())
 				.then (() =>{
@@ -59,7 +59,7 @@ export default {
             <input type="email" name="email" v-model="email" required placeholder="nom@groupomania.fr">
             <label>Mot de passe</label>
             <input type="password" name="password" v-model="password" required placeholder="****">
-            <button type="sublit" @click="signup">Inscription</button>
+            <button type="sublit" @click="signup()">Inscription</button>
         </form>
         <p>Déjà membre ? <router-link to="/">Connectez-vous !</router-link>
         </p>

@@ -7,16 +7,27 @@ const fs = require('fs');
 /* POST: create a post */
 exports.createPost = (req, res, next) => 
 {
-    const postObject = JSON.parse(req.body.post);
-    //console.log();
-    const post = new Post(
-    {
-        ...postObject,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    });
-    post.save()
-    .then(() => res.status(201).json({ message: 'Publication enregistrée' }))
-    .catch(error => res.status(400).json({ message: error }))};
+    // const post = new Post(
+    // {
+    //     UserId: req.body.userId,
+    //     content: req.body.content,
+
+    //     //imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    // });
+    // console.log(post);
+    // post.save()
+    // .then(() => res.status(201).json({ message: 'Publication enregistrée' }))
+    // .catch(error => res.status(400).json({ message: 'erreur création de post'  }))}; 
+
+    Post.create ({
+        
+        content: req.body.content,
+        userId : req.body.userId,
+    })
+
+    .then((newPost) => res.status(201).json({newPost, message: "Publication enregistrée"}))
+    .catch(error => res.status(400).json({ message: 'erreur création de post' }));
+};
 
 /* GET: get all posts*/
 exports.getAllPosts = (req, res, next) => 
@@ -31,7 +42,7 @@ exports.findPost = (req, res, next) =>
 {
     Post.findOne({ _id: req.params.id })
         .then((post) => { res.status(200).json(post); })
-        .catch((error) => { res.status(404).json({ error });});
+        .catch((error) => { res.status(404).json({ message :'test' });});
 };
 
 /* PUT: update a post */
@@ -43,7 +54,7 @@ exports.updatePost= (req, res, next) =>
        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
    } : { ...req.body};
    delete postObject._userId;
-   POst.findOne({ _id: req.params.id })
+   Post.findOne({ _id: req.params.id })
    .then( post => 
    {
        if (post.userId != req.auth.userId)
@@ -130,4 +141,3 @@ exports.likePost = (req, res, next) =>
         .catch((error) => res.status(400).json({ error }));
     }
 };
-

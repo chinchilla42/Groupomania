@@ -2,13 +2,15 @@
 export default {
 	name: 'NavHeader',
     methods: {
-        logout(){
+        logout()
+        {
             localStorage.clear();
-            this.$router.push('/');
+            this.$router.push('/');	
+            console.log("déconnexion");
         }
 
     }
-}
+};
 </script>
 
 <template>
@@ -16,7 +18,7 @@ export default {
         <img src="../assets/icon-left-font.png" alt="Logo de Groupomania">
         <nav>
             <ul> 
-                <li><router-link to="/" @click="logout()"><i class="fas fa-power-off"></i> Déconnexion</router-link></li>    
+                <li @click="logout()"><i class="fas fa-power-off"></i> Déconnexion</li>   
                 <li><router-link to="/signup">Créer un compte</router-link></li>
                 <li><router-link to="/">Se connecter</router-link></li>
             </ul>

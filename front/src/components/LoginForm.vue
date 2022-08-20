@@ -25,7 +25,7 @@ export default {
                     'Content-Type': 'application/json'
                 },
             };
-            fetch('http://localhost:3000/api/auth/login', options)
+            fetch('http://localhost:3000/groupomania/auth/login', options)
                 .then(res => res.json())
                 .then(data => 
                 {
@@ -35,7 +35,7 @@ export default {
                         let userId = data.userId;
                         let admin = data.admin;
                         localStorage.setItem("token", token);
-                        localStorage.setItem("userId", JSON.stringify(userId));
+                        localStorage.setItem("userId", (userId));
                         localStorage.setItem("admin", JSON.stringify(admin));
                         this.$router.push('/HomePage');
                         
@@ -59,7 +59,7 @@ export default {
             <input type="email" name="email" v-model="email" required placeholder="nom@groupomania.fr">
             <label>Mot de passe</label>
             <input type="password" name="password" v-model="password" required placeholder="****">
-            <button type="submit" @click="login">Connexion</button>
+            <button type="submit" @click="login()">Connexion</button>
         </form>
         <p>Pas encore membre ? <router-link to="/signup">Créez un compte !</router-link>
         </p>

@@ -1,14 +1,14 @@
 <script>
 import NavHeader from '@/components/NavHeader.vue'
 import CreatePost from '@/components/CreatePost.vue'
-import DisplayFeed from '@/components/DisplayFeed.vue'
+//import DisplayFeed from '@/components/DisplayFeed.vue'
 
 export default {
   name: 'HomePAge',
   components: {
     NavHeader,
     CreatePost,
-    DisplayFeed
+   // DisplayFeed
 },
 }
 </script>
@@ -19,7 +19,7 @@ export default {
     <main>
       <h1>Bienvenue, <!--{{ firstName }} {{ lastName}}--> !</h1>
       <CreatePost />
-      <DisplayFeed />
+      <!--<DisplayFeed />-->
     </main>
   </div>
 </template>

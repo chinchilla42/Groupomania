@@ -2,9 +2,14 @@
 import NavHeader from '@/components/NavHeader.vue'
 import LoginForm from '../components/LoginForm.vue'
 
-export default {
+export default 
+{
     name: "SignIn",
-    components: { NavHeader, LoginForm }
+    components: 
+    { 
+        NavHeader, 
+        LoginForm 
+    }
 }
 </script> 
 

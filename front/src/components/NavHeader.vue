@@ -3,7 +3,7 @@ export default {
 	name: 'NavHeader',
     methods: {
         logout(){
-            sessionStorage.clear();
+            localStorage.clear();
             this.$router.push('/');
         }
 

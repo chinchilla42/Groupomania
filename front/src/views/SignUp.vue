@@ -2,11 +2,25 @@
 <script>
 import NavHeader from '@/components/NavHeader.vue'
 import ConnectionForm from '../components/ConnectionForm.vue'
-export default {
+export default 
+{
     name: "SignUp",
-    components: { NavHeader, ConnectionForm },
+    components: 
+    { 
+        NavHeader, 
+        ConnectionForm 
+    },
 }
 </script> 
+
+<template>
+    <div class="container">
+        <NavHeader />
+        <main>
+            <ConnectionForm />
+        </main>
+    </div>
+</template>
 
 <style>
 main {
@@ -93,11 +107,4 @@ p {
 }
 </style>
 
-<template>
-    <div class="container">
-        <NavHeader />
-        <main>
-            <ConnectionForm />
-        </main>
-    </div>
-</template>
+

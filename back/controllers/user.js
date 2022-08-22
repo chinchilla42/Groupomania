@@ -50,3 +50,10 @@ exports.login = (req, res) => {
     }) 
     .catch(error => res.status(500).json({ error: 'erreur 2' }));
 };
+
+exports.findUser = (req, res, next) => 
+{
+    User.findOne({ where: { _id: req.params.id}})
+        .then((user) => { res.status(200).json(user); })
+        .catch((error) => { res.status(404).json({ message :'test' });});
+};

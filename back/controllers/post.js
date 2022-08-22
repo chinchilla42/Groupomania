@@ -4,54 +4,44 @@ const Post = require('../models/Post')
 /* import fs package to access file system mangement */
 const fs = require('fs');
 
-/* POST: create a post */
+/* POST: create a post */ //fonctionne pour publication sans image
 // exports.createPost = (req, res, next) => 
 // {
-    // const post = new Post(
-    // {
-    //     UserId: req.body.userId,
-    //     content: req.body.content,
-    //     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    // });
-    // console.log(post);
-    // post.save()
-    // .then(() => res.status(201).json({ message: 'Publication enregistrée' }))
-    // .catch(error => res.status(400).json({ message: 'erreur création de post'  }))}; 
-
-    // Post.create ({
-    //     userId : req.body.userId,
-    //     content: req.body.content,
-    //     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    // })
-
-    // .then((newPost) => res.status(201).json({newPost, message: "Publication enregistrée"}))
-    // .catch(error => res.status(400).json({ message: 'erreur création de post' }));};
-
-
-exports.createPost = (req,res, next) => {
-    if(!req.file)
-    {
-        Post.create ({
-            UserId : userId,
-            content: req.body.content,
-        })
-        .then((newPost) => res.status(201).json({newPost, message: "Post publié !"}))
-
-        .catch(error => res.status(400).json({ message: 'erreur création de post' }));
-    } 
-    else if (req.file)
-    {
-        Post.create ({
+//     Post.create ({
         
-            content: req.body.content,
-            image : `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
-            userId : req.body.userId,
-        })
+//         content: req.body.content,
+//         userId : req.body.userId,
+//     })
 
-        .then((newPost) => res.status(201).json({newPost, message: "Publication enregistrée"}))
-        .catch(error => res.status(400).json({ message: 'erreur création de post avec image' }));
+//     .then((newPost) => res.status(201).json({newPost, message: "Publication enregistrée"}))
+//     .catch(error => res.status(400).json({ message: 'erreur création de post' }));
+// };
+
+/* POST: create a post */ //essai pour publication avec image
+exports.createPost = (req, res, next) => 
+{
+    if (req.file) 
+    {
+        Post.create({
+            userId: req.body.userId,
+            content: req.body.content,
+        })
+            .then((newPost) => res.status(201).json({ newPost, message: "Publication enregistrée" }))
+            .catch(error => res.status(400).json({ message: 'erreur création de post' }));
     }
-};   
+    else if (req.file) 
+    {
+        Post.create({
+            userId: req.body.userId,
+            content: req.body.content,
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+
+        })
+            .then((newPost) => res.status(201).json({ newPost, message: "Publication enregistrée" }))
+            .catch(error => res.status(400).json({ message: 'erreur création de post' }));
+    }
+};
+
 
 /* GET: get all posts*/
 exports.getAllPosts = (req, res, next) => 
@@ -98,7 +88,7 @@ exports.updatePost= (req, res, next) =>
  /* DELETE: delete a post */
  exports.deletePost= (req, res, next) => 
  {
-     POst.findOne({ _id: req.params.id })
+     Post.findOne({ _id: req.params._id })
      .then(post => 
      {
          if (post.userId != req.auth.userId)
@@ -107,16 +97,17 @@ exports.updatePost= (req, res, next) =>
          }
          else
          {
-             const filename = post.imageUrl.split('/images/')[1];
-             fs.unlink(`images/${filename}`, () =>
-             {
+             console.log(post)
+             //const filename = post.imageUrl.split('/images/')[1];
+             //fs.unlink(`images/${filename}`, () =>
+            //  {
                  Post.deleteOne({ _id: req.params.id })
                  .then (() => res.status(200).json({ message: 'Publication supprimée'}))
-                 .catch( error => {res.status(401).json({ error})});
-             });
+                 .catch( error => {res.status(401).json({ message: 'erreur 401'})});
+            //  });
          }
      })      
-     .catch((error) => {res.status(500).json({error: error});});
+     .catch((error) => {res.status(500).json({message: 'erreur 500'});});
  };
 
 /* POST: like a post */

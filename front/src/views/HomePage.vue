@@ -1,25 +1,60 @@
 <script>
 import NavHeader from '@/components/NavHeader.vue'
 import CreatePost from '@/components/CreatePost.vue'
-//import DisplayFeed from '@/components/DisplayFeed.vue'
+import DisplayFeed from '@/components/DisplayFeed.vue'
 
 export default {
   name: 'HomePAge',
   components: {
     NavHeader,
     CreatePost,
-   // DisplayFeed
-},
-}
+    DisplayFeed
+  },
+  data(){
+    return {
+      userId: localStorage.getItem('userId'),
+      admin:  localStorage.getItem('admin'),
+      firstName: "",
+      lastName: "",
+    }
+  },
+  methods:
+  {
+  getUserInfo() 
+      {
+        console.log(this.userId)
+        const url = "http://localhost:3000/groupomania/auth/user/" + this.userId;
+        const options =
+        {
+          method: "GET",
+          headers:
+          {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          }
+        };
+        fetch(url, options)
+          .then(response => response.json())
+          .then(data => {
+            this.firstName = data.firstName;
+            this.lastName = data.lastName;
+            console.log(data);
+          })
+          .catch(error => console.log(error));
+      }
+  },
+created() {
+    this.getUserInfo();
+  },
+};
 </script>
 
 <template>
   <div class="container">
     <NavHeader />
-    <main>
-      <h1>Bienvenue, <!--{{ firstName }} {{ lastName}}--> !</h1>
+    <main @created="getUserInfo()">
+      <h1 > Bienvenue, {{ firstName }} {{ lastName}} !</h1>
       <CreatePost />
-      <!--<DisplayFeed />-->
+      <DisplayFeed />
     </main>
   </div>
 </template>
@@ -47,7 +82,7 @@ h2{
   margin: 10px;
   padding: 10px;
 }
-.create-post, .content {
+.create-post, .post {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -57,37 +92,16 @@ h2{
   box-shadow: 2px 2px 5px 2px #4E5166;
 }
 
-textarea {
-  resize: none;
-  max-width: 100%;
-  margin: 5px;
-  padding: 5px;
-}
 
-.change{
-  display: flex;
-  flex-wrap: wrap;
-  width: auto;
-  justify-content: space-around;
-  border-top: solid 1px;
 
-}
 
-.content p{
+
+.post p{
   text-align: left;
   margin: 5px;
 }
 
-.like, .modify-post, .delete-post{
-  color: #FD2D01;
-  padding: 5px;
 
-}
-
-.like{
-  text-align: right;
-  padding-bottom: 10px;
-}
 
 .fas{
     color: #FFD7D7;

@@ -18,6 +18,7 @@ export default {
                 email: this.email,
                 password: this.password
             }
+            console.log(userData);
             // let password = this.input.password;
             // let regex = /^[a-zA-Z\-'çñàéèêëïîôüù ]{2,}$/;
             // if (!regex.test(password)) {

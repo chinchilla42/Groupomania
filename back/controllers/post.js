@@ -5,29 +5,53 @@ const Post = require('../models/Post')
 const fs = require('fs');
 
 /* POST: create a post */
-exports.createPost = (req, res, next) => 
-{
+// exports.createPost = (req, res, next) => 
+// {
     // const post = new Post(
     // {
     //     UserId: req.body.userId,
     //     content: req.body.content,
-
-    //     //imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    //     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     // });
     // console.log(post);
     // post.save()
     // .then(() => res.status(201).json({ message: 'Publication enregistrée' }))
     // .catch(error => res.status(400).json({ message: 'erreur création de post'  }))}; 
 
-    Post.create ({
-        
-        content: req.body.content,
-        userId : req.body.userId,
-    })
+    // Post.create ({
+    //     userId : req.body.userId,
+    //     content: req.body.content,
+    //     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    // })
 
-    .then((newPost) => res.status(201).json({newPost, message: "Publication enregistrée"}))
-    .catch(error => res.status(400).json({ message: 'erreur création de post' }));
-};
+    // .then((newPost) => res.status(201).json({newPost, message: "Publication enregistrée"}))
+    // .catch(error => res.status(400).json({ message: 'erreur création de post' }));};
+
+
+exports.createPost = (req,res, next) => {
+    if(!req.file)
+    {
+        Post.create ({
+            UserId : userId,
+            content: req.body.content,
+        })
+        .then((newPost) => res.status(201).json({newPost, message: "Post publié !"}))
+
+        .catch(error => res.status(400).json({ message: 'erreur création de post' }));
+    } 
+    else if (req.file)
+    {
+        Post.create ({
+        
+            content: req.body.content,
+            image : `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+            userId : req.body.userId,
+        })
+
+        .then((newPost) => res.status(201).json({newPost, message: "Publication enregistrée"}))
+        .catch(error => res.status(400).json({ message: 'erreur création de post avec image' }));
+    }
+};   
 
 /* GET: get all posts*/
 exports.getAllPosts = (req, res, next) => 

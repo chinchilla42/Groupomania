@@ -88,16 +88,15 @@ exports.updatePost= (req, res, next) =>
  /* DELETE: delete a post */
  exports.deletePost= (req, res, next) => 
  {
-     Post.findOne({ _id: req.params._id })
+     Post.findOne( {where: {id : req.params.id}})
      .then(post => 
      {
-         if (post.userId != req.auth.userId)
+         if (post.userId === req.body.userId || req.body.isAdmin)
          {
-             res.status(401).json({message: 'Non autorisé'});
+            res.status(401).json({message: 'Non autorisé'});
          }
          else
          {
-             console.log(post)
              //const filename = post.imageUrl.split('/images/')[1];
              //fs.unlink(`images/${filename}`, () =>
             //  {

@@ -12,31 +12,36 @@ export default {
 		};
 	},
 	mounted() {
-		const url = "http://localhost:3000/groupomania/post";
-		const options =
-		{
-			method: "GET",
-			headers:
-			{
-				"Content-Type": "application/json",
-				"Authorization": "Bearer " + localStorage.getItem("token"),
-			}
-		};
-		fetch(url, options)
-			.then(res => res.json())
-			.then(data => {
-				this.posts = data;
-				console.log("ok");
-			})
-			.catch(error => console.log(error));
+		this.getAllPosts();
 	},
 	methods:
 	{
+		getAllPosts() {
+			const url = "http://localhost:3000/groupomania/post";
+			const options =
+			{
+				method: "GET",
+				headers:
+				{
+					"Content-Type": "application/json",
+					"Authorization": "Bearer " + localStorage.getItem("token"),
+				}
+			};
+			fetch(url, options)
+				.then(res => res.json())
+				.then(data => {
+					this.posts = data;
+					console.log("ok");
+				})
+				.catch(error => console.log(error));
+		},
+
 		editPost(id) {
 			this.$router.push({
 				path: "/PostEdit/" + id
 			});
 		},
+
 		// 	deletePost(id)
 		// 	{
 		// 			const url = "http://localhost:3000/groupomania/post/" + id;
@@ -56,30 +61,32 @@ export default {
 		// 				.catch(error => console.log(error));
 		// 	}
 		// },
+
 		deletePost(id) {
-			console.log(id);
-			if (confirm("Voulez vous supprimer ce post ? ")) 
-			{
-				fetch(`http://localhost:3000/groupomania/post/` + id, 
-				{
-					method: "DELETE",
-					headers: {
-						"Authorization": "Bearer " + localStorage.getItem("token")
-					},
-				})
-					.then((res => res.json()
+			{ console.log(id); }
+
+			if (confirm("Voulez vous supprimer ce post ? ")) {
+				fetch(`http://localhost:3000/groupomania/post/${id}`,
+					{
+						method: "DELETE",
+						headers:
+						{
+							Authorization: `Bearer ${localStorage.getItem("token")}`
+						},
+					})
 					.then((res) => {
 						if (res.status === 200) {
-							this.$router.push("/HomePage");
+							alert("Publication supprimée !");
+							this.getAllPosts();
 						} else {
 							console.log(res.json());
 						}
 					})
-					.catch((err) => console.log(err))))
+					.catch((err) => console.log(err))
 			}
 		},
-	}
 
+	},
 }
 </script>
 

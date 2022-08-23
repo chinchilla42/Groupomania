@@ -26,8 +26,8 @@ export default
         const newPost = new FormData();
           newPost.append("userId", this.userId);
           newPost.append("content", this.content);
-          newPost.append("image", this.file);
-          //newPost.append("image", imageName);
+          //newPost.append("image", this.file);
+          newPost.append("image", imageName);
         for (const value of newPost.values()) {
           console.log(value);
         }        

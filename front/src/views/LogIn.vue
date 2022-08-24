@@ -9,6 +9,12 @@ export default
     { 
         NavHeader, 
         LoginForm 
+    },
+    data() 
+    {
+        return {
+            isAuth: false,
+        }
     }
 }
 </script> 

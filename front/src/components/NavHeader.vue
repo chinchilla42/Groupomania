@@ -1,6 +1,11 @@
 <script>
 export default {
 	name: 'NavHeader',
+    data(){
+        return{
+            isAuth: this.isAuth,
+        }
+    },
     methods: {
         logout()
         {

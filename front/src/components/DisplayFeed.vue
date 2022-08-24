@@ -1,113 +1,141 @@
 <script>
-export default {
-	name: 'DisplayFeed',
-	data() {
-		return {
-			userId: localStorage.getItem('userId'),
-			isAdmin: localStorage.getItem('isAdmin'),
-			firstName: "",
-			lastName: "",
-			imageUrl: "",
-			posts: [],
-		};
-	},
-	mounted() {
-		this.getAllPosts();
-	},
-	methods:
+
+export default
 	{
-		getAllPosts() {
-			const url = "http://localhost:3000/groupomania/post";
-			const options =
-			{
-				method: "GET",
-				headers:
-				{
-					"Content-Type": "application/json",
-					"Authorization": "Bearer " + localStorage.getItem("token"),
-				}
+		name: "DisplayFeed",
+		data() {
+			return {
+				userId: localStorage.getItem("userId"),
+				isAdmin: localStorage.getItem("isAdmin"),
+				firstName: "",
+				lastName: "",
+				imageUrl: "",
+				posts: [],
+				isEdit: false,
 			};
-			fetch(url, options)
-				.then(res => res.json())
-				.then(data => {
-					this.posts = data;
-					console.log("ok");
-				})
-				.catch(error => console.log(error));
 		},
 
-		editPost(id) {
-			this.$router.push({
-				path: "/PostEdit/" + id
-			});
+		mounted() {
+			this.getAllPosts();
 		},
 
-		// 	deletePost(id)
-		// 	{
-		// 			const url = "http://localhost:3000/groupomania/post/" + id;
-		// 			const options = {
-		// 				method: "DELETE",
-		// 				headers: 
-		// 				{
-		// 					"Content-Type": "application/json",
-		// 					"Authorization": "Bearer " + localStorage.getItem("token"),
-		// 				},
-		// 			};
-		// 			fetch(url, options)
-		// 				.then(response => response.json())
-		// 				.then(data => {
-		// 					this.post = data;
-		// 				})
-		// 				.catch(error => console.log(error));
-		// 	}
-		// },
+		methods:
+		{
+			getAllPosts() {
+				const url = "http://localhost:3000/groupomania/post";
+				const options = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + localStorage.getItem("token"),
+					}
+				};
+				fetch(url, options)
+					.then(res => res.json())
+					.then(data => {
+						this.posts = data;
+						console.log("ok");
+					})
+					.catch(error => console.log(error));
+			},
 
-		deletePost(id) {
-			{ console.log(id); }
+			toggleEditPost() 
+			{
+				this.isEdit = !this.isEdit;
+			},
 
-			if (confirm("Voulez vous supprimer ce post ? ")) {
-				fetch(`http://localhost:3000/groupomania/post/${id}`,
-					{
-						method: "DELETE",
-						headers:
+			// editPost() {
+
+			// },
+
+			deletePost(id) {
+				if (confirm("Voulez vous supprimer ce post ? ")) {
+					fetch(`http://localhost:3000/groupomania/post/${id}`,
 						{
-							Authorization: `Bearer ${localStorage.getItem("token")}`
-						},
-					})
-					.then((res) => {
-						if (res.status === 200) {
-							alert("Publication supprimée !");
-							this.getAllPosts();
-						} else {
-							console.log(res.json());
-						}
-					})
-					.catch((err) => console.log(err))
+							method: "DELETE",
+							headers:
+							{
+								Authorization: `Bearer ${localStorage.getItem("token")}`
+							},
+						})
+						.then((res) => {
+							if (res.status === 200) {
+								alert("Publication supprimée !");
+								this.getAllPosts();
+							}
+							else {
+								console.log(res.json());
+							}
+						})
+						.catch((err) => console.log(err));
+				}
+			},
+
+			likePost() 
+			{
+				
+
+            
+            
+            fetch(`http://localhost:3000/groupomania/post/${post.id}/like/`, 
+			{
+                method : "POST",
+                    body: JSON.stringify(like),
+                    headers:{
+                    'Content-type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+            })
+            .then((res)=> {
+                res.json()
+                .then(data => {
+                    if(res.status === 201){
+                        document.location.reload();
+                        this.$router.push("/feed");
+                    } else {
+                        console.log("Erreur");
+                        }
+                    })
+            })
+            .catch((err)=> {
+                console.log(err);
+            })
+        
 			}
+
 		},
 
-	},
-}
+	}
 </script>
 
 <template>
 	<div class="feeds">
 		<h2>Votre fil d'actualité</h2>
 		<div class="feeds_post">
-			<div v-for="post in posts" :key="post.id" class="post">
-				<div class="post__user">
-					<p>{{ firstName }} {{ lastName }} a dit : </p>
-				</div>
-				<div class="post__image">{{ post.image }}
-				</div>
-				<p class="post__content">{{ post.content }}</p>
-				<div class="like"><i class="fas fa-thumbs-up"></i> J'aime</div>
-				<div class="post__edit" v-if="post.userId == userId || admin == 'true'">
-					<div class="modify_post" @click="editPost(post._id)">
-						<p><i class="fas fa-pen"></i> Modifier</p>
+			<div v-for="post in posts.slice().reverse()" :key="post.id" class="post">
+				<div class="post__box">
+					<div class="post__user">
+						<p>{{ firstName }} {{ lastName }} a dit : </p>
 					</div>
-					<div class="delete_post" @click="deletePost(post._id)">
-						<p><i class="fas fa-trash"></i> Supprimer</p>
+					<div class="post__image">{{ post.image }}
+					</div>
+					<p class="post__content">{{ post.content }}</p>
+					<div class="like" @click="likePost(post._id)"><i class="fas fa-thumbs-up"></i> J'aime</div>
+					<div class="change" v-if="post.userId == userId || admin == 'true'">
+						<div class="modify-post" @click="toggleEditPost()">
+							<p><i class="fas fa-pen"></i> Modifier</p>
+						</div>
+						<div class="delete-post" @click="deletePost(post._id)">
+							<p><i class=" fas fa-trash"></i> Supprimer</p>
+						</div>
+					</div>
+					<div class="edit_post" v-if="isEdit">
+						<form name="editPost" id="editPost">
+							<input type="text" required v-model="this.content" aria-label="contenu">
+							<input type="file" ref="imageUrl" name="image" id="imageUrl" accept="image/*"
+								aria-label="image">
+							<button type="submit" @click="editPost(post._id)">Modifier</button>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -116,7 +144,18 @@ export default {
 </template>
 
 <style>
-.post__edit {
+.create-post, .post {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin:  10px ;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px 2px #4E5166;
+}
+
+
+.change {
 	display: flex;
 	flex-wrap: wrap;
 	width: auto;

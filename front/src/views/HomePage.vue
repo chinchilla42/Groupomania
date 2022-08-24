@@ -5,54 +5,72 @@ import DisplayFeed from '@/components/DisplayFeed.vue'
 
 export default {
   name: 'HomePAge',
+
   components: {
     NavHeader,
     CreatePost,
     DisplayFeed
   },
+
+  beforeCreate() 
+  {
+    //console.log(localStorage.getItem("userId"));
+    fetch(`http://localhost:3000/groupomania/auth/user/${localStorage.getItem("userId")}`,
+      {
+        method: "GET",
+        headers:
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+      })
+      .then(res => res.json())
+      .then(data => {
+        this.user = data;
+        console.log(this.user);
+      })
+      .catch((err) => console.log(err))
+  },
+  
   data(){
     return {
       userId: localStorage.getItem('userId'),
       admin:  localStorage.getItem('admin'),
-      firstName: "",
-      lastName: "",
+      user: {},
     }
   },
+  
   methods:
   {
-  getUserInfo() 
-      {
-        console.log(this.userId)
-        const url = "http://localhost:3000/groupomania/auth/user/" + this.userId;
-        const options =
-        {
-          method: "GET",
-          headers:
-          {
-            "Authorization": "Bearer " + localStorage.getItem("token")
-          }
-        };
-        fetch(url, options)
-          .then(response => response.json())
-          .then(data => {
-            this.firstName = data.firstName;
-            this.lastName = data.lastName;
-            console.log(data);
-          })
-          .catch(error => console.log(error));
-      }
+  // getUserInfo() 
+  //     {
+  //       console.log(this.userId)
+  //       const url = "http://localhost:3000/groupomania/auth/user/" + this.userId;
+  //       const options =
+  //       {
+  //         method: "GET",
+  //         headers:
+  //         {
+  //           "Authorization": "Bearer " + localStorage.getItem("token")
+  //         }
+  //       };
+  //       fetch(url, options)
+  //         .then(response => response.json())
+  //         .then(data => {
+  //           this.user = data;
+  //           console.log(data);
+  //         })
+  //         .catch(error => console.log(error));
+  //     }
   },
-created() {
-    this.getUserInfo();
-  },
+
 };
 </script>
 
 <template>
   <div class="container">
     <NavHeader />
-    <main @created="getUserInfo()">
-      <h1 > Bienvenue, {{ firstName }} {{ lastName}} !</h1>
+    <main>
+      <h1 > Bienvenue, {{ user.firstName }} {{ user.lastName}} !</h1>
       <CreatePost />
       <DisplayFeed />
     </main>
@@ -81,15 +99,6 @@ h2{
   text-align: center;
   margin: 10px;
   padding: 10px;
-}
-.create-post, .post {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  margin:  10px ;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 2px 2px 5px 2px #4E5166;
 }
 
 

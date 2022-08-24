@@ -10,6 +10,12 @@ export default
         NavHeader, 
         ConnectionForm 
     },
+    data() 
+    {
+        return {
+            isAuth: false,
+        }
+    },
 }
 </script> 
 

@@ -4,44 +4,7 @@ const Post = require('../models/Post')
 /* import fs package to access file system mangement */
 const fs = require('fs');
 
-/* POST: create a post */ //fonctionne pour publication sans image
-// exports.createPost = (req, res, next) => 
-// {
-//     Post.create ({
-        
-//         content: req.body.content,
-//         userId : req.body.userId,
-//     })
-
-//     .then((newPost) => res.status(201).json({newPost, message: "Publication enregistrée"}))
-//     .catch(error => res.status(400).json({ message: 'erreur création de post' }));
-// };
-
-/* POST: create a post */ //essai pour publication avec image
-// exports.createPost = (req, res, next) => 
-// {
-//     if (req.file) 
-//     {
-//         Post.create({
-//             userId: req.body.userId,
-//             content: req.body.content,
-//         })
-//             .then((newPost) => res.status(201).json({ newPost, message: "Publication enregistrée" }))
-//             .catch(error => res.status(400).json({ message: 'erreur création de post' }));
-//     }
-//     else if (req.file) 
-//     {
-//         Post.create({
-//             userId: req.body.userId,
-//             content: req.body.content,
-//             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-
-//         })
-//             .then((newPost) => res.status(201).json({ newPost, message: "Publication enregistrée" }))
-//             .catch(error => res.status(400).json({ message: 'erreur création de post' }));
-//     }
-// };
-
+/* POST: create a post */
 exports.createPost = (req, res, next) => 
 {  
     const post = new Post(    
@@ -72,7 +35,8 @@ exports.getAllPosts = (req, res, next) =>
 exports.findPost = (req, res, next) => 
 {
     Post.findOne({ _id: req.params.id })
-        .then((post) => { res.status(200).json(post); })
+        .then((post) => { res.status(200).json(post);
+        console.log(post) })
         .catch((error) => { res.status(404).json({ message :'test' });});
 };
 

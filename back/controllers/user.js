@@ -51,11 +51,11 @@ exports.login = (req, res) => {
     .catch(error => res.status(500).json({ error: 'erreur 2' }));
 };
 
+/* Get one user */
 exports.findUser = (req, res, next) => 
 {
     User.findOne({ _id: req.params.id})
         .then((user) => { res.status(200).json(user);
-            console.log(user);
          })
         .catch((error) => { res.status(404).json({ message :'test' });});
 };

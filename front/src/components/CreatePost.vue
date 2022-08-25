@@ -16,29 +16,14 @@ export default
   },
   methods: 
   {
+    /* afficher le formulaire de création de post */
     toggleIsCreate()
     {
       this.isCreate = !this.isCreate;
     },
 
-    // onFileClick() 
-    // {
-    //   this.$refs['input-file'].click()
-    // },
-
-    // onFileSelect() 
-    // {
-    //   const [file] = this.$refs['input-file'].files;
-    //   if (file && file['type'].split('/')[0] === 'image') {
-    //     this.imageFile = file;
-    //     this.imagePreview = URL.createObjectURL(file);
-    //   }
-    //   else {
-    //     this.$refs.file.value = null;
-    //   }
-    // }, 
-
-    add_img(){
+    /*récupérer l'image ajoutée au post */
+    addImg(){
           this.file = this.$refs.file.files[0];
           this.file = this.$refs.file.files[0];
           //console.log(this.file);
@@ -54,18 +39,48 @@ export default
          this.$refs.file.value = null;
        }
     },
-    publishContent() //essai pour publication avec image
-    {
-      if (this.content == "")
+
+    /*envoyer le post au back */
+    publishContent() {
+      if (this.content == "" && this.file === "") // si le post vide
       {
         alert("Votre publication est vide");
       }
-      else 
+      else if (this.file === "") // post sans image OK
+      {
+         
+        const newContent = {
+          userId: this.userId,
+          content: this.content,
+        }
+        console.log(newContent);
+        const options =
+        {
+          method: 'POST',
+          body: JSON.stringify(newContent),
+          headers: 
+          {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          }
+        };
+        fetch('http://localhost:3000/groupomania/post', options)
+          .then((res => res.json()
+          .then(res => {
+          console.log(res);
+          alert("Votre message a été publié avec succès");
+          this.$emit("getAllPosts"); 
+        })
+        .catch(error => console.log('error', error))))
+      
+      }
+      else // post avec image ***CA MARCHE PAS T___T***
       {
         const newPost = new FormData();
           newPost.append("content", this.content);
           //newPost.append("image", this.imagePreview);    
-          newPost.append("image", this.file, this.file.name);      
+          newPost.append("image", this.file, this.file.name);   
+          // plante le back --> penser à redémarrer avec rs dans le back   
           newPost.append("userId", localStorage.getItem("userId"));
          
         for (const value of newPost.values()) 
@@ -90,7 +105,9 @@ export default
           .then((res => res.json()
           .then(res => {
           console.log(res);
-          //this.getAllPosts();        
+          alert("Votre message a été publié avec succès");
+          this.$emit("getAllPosts");    //ne semble pas fonctionner, 
+          //il faut reload la page pour que le dernier post s'affiche
         })
         .catch(error => console.log('error', error))))
       }
@@ -106,7 +123,7 @@ export default
   <div class="createPost">
     <h2 @click="toggleIsCreate()">Créer une publication <i class="fas fa-plus"></i></h2>
     <div class="createForm" v-if="isCreate">
-      <div  id="newPost" >
+      <form  id="newPost" >
         <textarea wrap="soft" rows="1" name="content" v-model="content" placeholder="Quoi de neuf ?"></textarea>
         <label for="image"><i class="fas fa-file-image"></i> Ajouter une image</label>
         <input 
@@ -115,14 +132,14 @@ export default
         ref="file" 
         id="image"
         accept=".image/*" 
-        @change="add_img"
+        @change="addImg()"
         aria-label="file selection" />
         <!-- <p @click="onFileClick()">Ajouter cette image</p> -->
         <div v-if="imagePreview">
           <img :src=imagePreview />
         </div>
         <button type="button" @click="publishContent()">Partager</button>
-      </div>
+      </form>
     </div>
   </div>
 </template>

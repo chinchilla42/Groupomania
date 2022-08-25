@@ -27,26 +27,27 @@ export default {
   
   methods:
   {
-  getUserInfo() 
+    /*récupérer les info de l'utilisateur connecté*/ 
+    //réutiliser pour afficher les auteurs des posts ?
+    getUserInfo() 
+    {
+      const url = "http://localhost:3000/groupomania/auth/user/" + this.userId;
+      const options =
       {
-        console.log(this.userId);
-        const url = "http://localhost:3000/groupomania/auth/user/" + this.userId;
-        const options =
+        method: "GET",
+        headers:
         {
-          method: "GET",
-          headers:
-          {
-            "Authorization": "Bearer " + localStorage.getItem("token")
-          }
-        };
-        fetch(url, options)
-          .then(response => response.json())
-          .then(userData => {
-            this.user = userData;
-            console.log(userData);
-          })
-          .catch(error => console.log(error));
-      }
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        }
+      };
+      fetch(url, options)
+      .then(response => response.json())
+      .then(userData => {
+        this.user = userData;
+      })
+      .catch(error => console.log(error));
+    }
+
   },
 
 };

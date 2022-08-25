@@ -12,23 +12,9 @@ export default {
     DisplayFeed
   },
 
-  beforeCreate() 
+  mounted() 
   {
-    //console.log(localStorage.getItem("userId"));
-    fetch(`http://localhost:3000/groupomania/auth/user/${localStorage.getItem("userId")}`,
-      {
-        method: "GET",
-        headers:
-        {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        },
-      })
-      .then(res => res.json())
-      .then(data => {
-        this.user = data;
-        console.log(this.user);
-      })
-      .catch((err) => console.log(err))
+    this.getUserInfo();
   },
   
   data(){
@@ -41,26 +27,26 @@ export default {
   
   methods:
   {
-  // getUserInfo() 
-  //     {
-  //       console.log(this.userId)
-  //       const url = "http://localhost:3000/groupomania/auth/user/" + this.userId;
-  //       const options =
-  //       {
-  //         method: "GET",
-  //         headers:
-  //         {
-  //           "Authorization": "Bearer " + localStorage.getItem("token")
-  //         }
-  //       };
-  //       fetch(url, options)
-  //         .then(response => response.json())
-  //         .then(data => {
-  //           this.user = data;
-  //           console.log(data);
-  //         })
-  //         .catch(error => console.log(error));
-  //     }
+  getUserInfo() 
+      {
+        console.log(this.userId);
+        const url = "http://localhost:3000/groupomania/auth/user/" + this.userId;
+        const options =
+        {
+          method: "GET",
+          headers:
+          {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          }
+        };
+        fetch(url, options)
+          .then(response => response.json())
+          .then(userData => {
+            this.user = userData;
+            console.log(userData);
+          })
+          .catch(error => console.log(error));
+      }
   },
 
 };

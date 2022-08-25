@@ -53,9 +53,8 @@ exports.login = (req, res) => {
 
 exports.findUser = (req, res, next) => 
 {
-    User.findOne({ where: { id: req.params.id}})
-        .then((user) => { 
-            res.status(200).json(user);
+    User.findOne({ _id: req.params.id})
+        .then((user) => { res.status(200).json(user);
             console.log(user);
          })
         .catch((error) => { res.status(404).json({ message :'test' });});

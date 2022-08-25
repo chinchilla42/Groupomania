@@ -43,7 +43,7 @@ const fs = require('fs');
 // };
 
 exports.createPost = (req, res, next) => 
-{
+{  
     const post = new Post(    
     {
 	    userId: req.body.userId,
@@ -51,7 +51,7 @@ exports.createPost = (req, res, next) =>
     });
     if (req.file) 
     {
-	    test.image= `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+	    image= `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
     }
     post.save()
     .then(() => res.status(201).json({ message: 'Publication enregistrée' }))

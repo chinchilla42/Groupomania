@@ -5,13 +5,11 @@ export default
 		name: "DisplayFeed",
 		data() {
 			return {
-				userId: localStorage.getItem("userId"),
-				isAdmin: localStorage.getItem("isAdmin"),
-				firstName: "",
-				lastName: "",
-				imageUrl: "",
-				posts: [],
 				isEdit: false,
+				userId: localStorage.getItem("userId"),
+				admin: localStorage.getItem("admin"),
+				posts: [],
+				user: {},
 			};
 		},
 
@@ -34,19 +32,17 @@ export default
 					.then(res => res.json())
 					.then(data => {
 						this.posts = data;
-						console.log("ok");
 					})
 					.catch(error => console.log(error));
 			},
 
-			toggleEditPost() 
-			{
+			toggleEditPost() {
 				this.isEdit = !this.isEdit;
 			},
 
-			// editPost() {
+			editPost() {
 
-			// },
+			},
 
 			deletePost(id) {
 				if (confirm("Voulez vous supprimer ce post ? ")) {
@@ -71,37 +67,36 @@ export default
 				}
 			},
 
-			likePost() 
-			{
-				
+			// 	likePost() 
+			// 	{
 
-            
-            
-            fetch(`http://localhost:3000/groupomania/post/${post.id}/like/`, 
-			{
-                method : "POST",
-                    body: JSON.stringify(like),
-                    headers:{
-                    'Content-type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-            })
-            .then((res)=> {
-                res.json()
-                .then(data => {
-                    if(res.status === 201){
-                        document.location.reload();
-                        this.$router.push("/feed");
-                    } else {
-                        console.log("Erreur");
-                        }
-                    })
-            })
-            .catch((err)=> {
-                console.log(err);
-            })
-        
-			}
+
+
+
+			//     fetch(`http://localhost:3000/groupomania/post/${post.id}/like/`, 
+			// 	{
+			//         method : "POST",
+			//             body: JSON.stringify(like),
+			//             headers:{
+			//             'Content-type': 'application/json',
+			//             Authorization: `Bearer ${localStorage.getItem("token")}`,
+			//             },
+			//     })
+			//     .then((res)=> {
+			//         res.json()
+			//         .then(data => {
+			//             if(res.status === 201){
+			//                 this.getAllPosts();
+			//             } else {
+			//                 console.log("Erreur");
+			//                 }
+			//             })
+			//     })
+			//     .catch((err)=> {
+			//         console.log(err);
+			//     })
+
+			// 	}
 
 		},
 
@@ -115,14 +110,15 @@ export default
 			<div v-for="post in posts.slice().reverse()" :key="post.id" class="post">
 				<div class="post__box">
 					<div class="post__user">
-						<p>{{ firstName }} {{ lastName }} a dit : </p>
+						<p>{{ user.firstName }} {{ user.lastName }} a dit : </p>
 					</div>
 					<div class="post__image">{{ post.image }}
 					</div>
 					<p class="post__content">{{ post.content }}</p>
 					<div class="like" @click="likePost(post._id)"><i class="fas fa-thumbs-up"></i> J'aime</div>
 					<div class="change" v-if="post.userId == userId || admin == 'true'">
-						<div class="modify-post" @click="toggleEditPost()">
+						<div class="modify_post" @click="toggleEditPost()">
+
 							<p><i class="fas fa-pen"></i> Modifier</p>
 						</div>
 						<div class="delete-post" @click="deletePost(post._id)">
@@ -144,14 +140,15 @@ export default
 </template>
 
 <style>
-.create-post, .post {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  margin:  10px ;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 2px 2px 5px 2px #4E5166;
+.create-post,
+.post {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	margin: 10px;
+	padding: 10px;
+	border-radius: 5px;
+	box-shadow: 2px 2px 5px 2px #4E5166;
 }
 
 

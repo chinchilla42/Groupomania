@@ -4,11 +4,14 @@ export default
   name: 'CreatePost',
   data() {
     return {
+      post: "",
       content: "",
       image: "",
       file: "",
       userId: localStorage.getItem('userId'),
       isCreate: false,
+      imageFile: null,
+      imagePreview: null,
     }
   },
   methods: 
@@ -18,23 +21,39 @@ export default
       this.isCreate = !this.isCreate;
     },
 
-    onFileClick() 
-    {
-      this.$refs['input-file'].click()
-    },
+    // onFileClick() 
+    // {
+    //   this.$refs['input-file'].click()
+    // },
 
-    onFileSelect() 
-    {
-      const [file] = this.$refs.file.files;
-      if (file && file['type'].split('/')[0] === 'image') {
-        this.imageFile = file;
-        this.imagePreview = URL.createObjectURL(file);
-      }
-      else {
-        this.$refs.file.value = null;
-      }
-    },
+    // onFileSelect() 
+    // {
+    //   const [file] = this.$refs['input-file'].files;
+    //   if (file && file['type'].split('/')[0] === 'image') {
+    //     this.imageFile = file;
+    //     this.imagePreview = URL.createObjectURL(file);
+    //   }
+    //   else {
+    //     this.$refs.file.value = null;
+    //   }
+    // }, 
 
+    add_img(){
+          this.file = this.$refs.file.files[0];
+          this.file = this.$refs.file.files[0];
+          //console.log(this.file);
+          if (this.file && this.file['type'].split('/')[0] === 'image') 
+          {
+         this.imageFile = this.file;
+         //console.log(this.imageFile);
+         this.imagePreview = URL.createObjectURL(this.file);
+        console.log(this.imagePreview);
+       }
+       else 
+       {
+         this.$refs.file.value = null;
+       }
+    },
     publishContent() //essai pour publication avec image
     {
       if (this.content == "")
@@ -43,10 +62,10 @@ export default
       }
       else 
       {
-         const newPost = new FormData();
+        const newPost = new FormData();
           newPost.append("content", this.content);
-          newPost.append("image", this.file);    
-          //newPost.append("image", this.file, this.file.name);      
+          //newPost.append("image", this.imagePreview);    
+          newPost.append("image", this.file, this.file.name);      
           newPost.append("userId", localStorage.getItem("userId"));
          
         for (const value of newPost.values()) 
@@ -56,7 +75,8 @@ export default
         const options =
         {
           method: 'POST',
-          body: newPost, //body: JSON.stringify(newPost),
+          body: newPost, 
+          //body: JSON.stringify(newPost),
 
           headers: 
           {
@@ -86,19 +106,23 @@ export default
   <div class="createPost">
     <h2 @click="toggleIsCreate()">Créer une publication <i class="fas fa-plus"></i></h2>
     <div class="createForm" v-if="isCreate">
-      <form  id="newPost" >
+      <div  id="newPost" >
         <textarea wrap="soft" rows="1" name="content" v-model="content" placeholder="Quoi de neuf ?"></textarea>
         <label for="image"><i class="fas fa-file-image"></i> Ajouter une image</label>
         <input 
         type="file" 
+        class="file"
         ref="file" 
         id="image"
         accept=".image/*" 
-        @change="onFileSelect()"
+        @change="add_img"
         aria-label="file selection" />
-        <button @click="onFileClick()">Ajouter cette image</button>
-        <button type="submit" @click="publishContent()">Partager</button>
-      </form>
+        <!-- <p @click="onFileClick()">Ajouter cette image</p> -->
+        <div v-if="imagePreview">
+          <img :src=imagePreview />
+        </div>
+        <button type="button" @click="publishContent()">Partager</button>
+      </div>
     </div>
   </div>
 </template>

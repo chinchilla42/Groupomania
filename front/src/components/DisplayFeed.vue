@@ -47,7 +47,6 @@ export default
 					.then(res => res.json())
 					.then(singlePostData => {
 						this.post = singlePostData;
-						console.log(this.post);
 					})
 					.catch(error => console.log(error));
 			},
@@ -115,10 +114,7 @@ export default
 			<div v-for="post in posts.slice().reverse()" :key="post.id" class="post">
 				<div class="post__box">
 					<div class="post__user">
-						<p>{{ firstName }} {{ lastName }} a dit : </p>
-						<!--impossible d'afficher le nom de l'auteur du post 
-						-> l'ajouter directement lors de la création du post ?
-						-->
+						<p>Le {{post.date }},  {{ post.author }} a dit : </p>
 					</div>
 					<div class="post__image">{{ post.image }}
 					</div>

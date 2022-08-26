@@ -8,7 +8,7 @@ export default {
 
   components: {
     NavHeader,
-    CreatePost,
+    CreatePost ,
     DisplayFeed
   },
 
@@ -22,13 +22,13 @@ export default {
       userId: localStorage.getItem('userId'),
       admin:  localStorage.getItem('admin'),
       user: {},
+      author: "",
     }
   },
   
   methods:
   {
     /*récupérer les info de l'utilisateur connecté*/ 
-    //réutiliser pour afficher les auteurs des posts ?
     getUserInfo() 
     {
       const url = "http://localhost:3000/groupomania/auth/user/" + this.userId;
@@ -44,9 +44,10 @@ export default {
       .then(response => response.json())
       .then(userData => {
         this.user = userData;
+        this.author = this.user.firstName + ' ' + this.user.lastName;
       })
       .catch(error => console.log(error));
-    }
+    },
 
   },
 
@@ -58,7 +59,7 @@ export default {
     <NavHeader />
     <main>
       <h1 > Bienvenue, {{ user.firstName }} {{ user.lastName}} !</h1>
-      <CreatePost />
+      <CreatePost :author=author />
       <DisplayFeed />
     </main>
   </div>

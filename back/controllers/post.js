@@ -10,6 +10,8 @@ exports.createPost = (req, res, next) =>
     const post = new Post(    
     {
 	    userId: req.body.userId,
+        author: req.body.author,
+        date: req.body.date,
 	    content: req.body.content,
     });
     if (req.file) 
@@ -35,8 +37,7 @@ exports.getAllPosts = (req, res, next) =>
 exports.findPost = (req, res, next) => 
 {
     Post.findOne({ _id: req.params.id })
-        .then((post) => { res.status(200).json(post);
-        console.log(post) })
+        .then((post) => { res.status(200).json(post);})
         .catch((error) => { res.status(404).json({ message :'test' });});
 };
 
@@ -46,7 +47,7 @@ exports.updatePost= (req, res, next) =>
    const postObject = req.file ? 
    {
        ...JSON.parse(req.body.post),
-       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+       image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
    } : { ...req.body};
    delete postObject._userId;
    Post.findOne({ _id: req.params.id })
@@ -78,7 +79,7 @@ exports.updatePost= (req, res, next) =>
          }
          else
          {
-             //const filename = post.imageUrl.split('/images/')[1];
+             //const filename = post.image.split('/images/')[1];
              //fs.unlink(`images/${filename}`, () =>
             //  {
                  Post.deleteOne({ _id: req.params.id })

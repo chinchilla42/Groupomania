@@ -6,6 +6,7 @@ export default
     return {
       post: "",
       content: "",
+      date: new Date().toLocaleString(),
       image: "",
       file: "",
       userId: localStorage.getItem('userId'),
@@ -14,6 +15,7 @@ export default
       imagePreview: null,
     }
   },
+  props:["author"],
   methods: 
   {
     /* afficher le formulaire de création de post */
@@ -51,6 +53,8 @@ export default
          
         const newContent = {
           userId: this.userId,
+          author: this.author,
+          date: this.date,
           content: this.content,
         }
         console.log(newContent);
@@ -69,6 +73,7 @@ export default
           .then(res => {
           console.log(res);
           alert("Votre message a été publié avec succès");
+          this.toggleIsCreate;
           this.$emit("getAllPosts"); 
         })
         .catch(error => console.log('error', error))))
@@ -124,7 +129,8 @@ export default
     <h2 @click="toggleIsCreate()">Créer une publication <i class="fas fa-plus"></i></h2>
     <div class="createForm" v-if="isCreate">
       <form  id="newPost" >
-        <textarea wrap="soft" rows="1" name="content" v-model="content" placeholder="Quoi de neuf ?"></textarea>
+        <div :author="author"></div>
+        <textarea wrap="soft" rows="10" name="content" v-model="content" placeholder="Quoi de neuf ?"></textarea>
         <label for="image"><i class="fas fa-file-image"></i> Ajouter une image</label>
         <input 
         type="file" 

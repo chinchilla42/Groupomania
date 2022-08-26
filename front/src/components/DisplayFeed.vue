@@ -51,7 +51,7 @@ export default
 					.catch(error => console.log(error));
 			},
 
-			/* essaie de créer 2 fonction pour afficher la partie modification */
+			/* essaie de créer 2 fonctions pour afficher la partie modification */
 			toggleEditPost() {
 				this.isEdit = !this.isEdit;
 			},
@@ -95,10 +95,30 @@ export default
 			},
 
 			/* aimer un post*/
-			likePost() {
-				//à faire
+			likePost(id) {
+				const newLike = {
+					like: 1,
+					userId: this.userId,
+					postId: id,
+				}
+				console.log(newLike);
+				const url = `http://localhost:3000/groupomania/post/${id}/like`;
+				const options =
+				{
+					method: 'POST',
+					body: JSON.stringify(newLike),
+					headers:
+					{
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + localStorage.getItem("token"),
+					}
+				};
+				fetch(url, options)
+					.then((res => res.json()
+						.then(res => { console.log(res); this.getAllPosts();})
+						.catch(error => console.log('error', error))))
 			}
-
+			/*reste à faire : montrer que l'utilisateur a liké le post */
 		},
 
 		mounted() {
@@ -114,12 +134,15 @@ export default
 			<div v-for="post in posts.slice().reverse()" :key="post.id" class="post">
 				<div class="post__box">
 					<div class="post__user">
-						<p>Le {{post.date }},  {{ post.author }} a dit : </p>
+						<p>Le {{ post.date }}, <span class="writer">{{ post.author }} </span> a dit : </p>
 					</div>
 					<div class="post__image">{{ post.image }}
 					</div>
 					<p class="post__content">{{ post.content }}</p>
-					<div class="like" @click="likePost(post._id)"><i class="fas fa-thumbs-up"></i> J'aime</div>
+					<div class= "reaction">
+						<div class="like" @click="likePost(post._id)"><i class="fas fa-thumbs-up"></i> J'aime</div>
+						<div>{{ post.likes }} personne(s) <i class="fas fa-heart"></i> ceci</div>
+					</div>
 					<div class="change" v-if="post.userId == userId || admin == 'true'">
 						<div class="modify_post" @click="openEditPost(post._id)">
 							<p><i class="fas fa-pen"></i> Modifier</p>
@@ -154,6 +177,9 @@ export default
 	box-shadow: 2px 2px 5px 2px #4E5166;
 }
 
+.writer {
+	font-weight: bold;
+}
 
 .change {
 	display: flex;
@@ -161,6 +187,13 @@ export default
 	width: auto;
 	justify-content: space-around;
 	border-top: solid 1px;
+}
+
+.reaction{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: baseline;
 }
 
 .like,

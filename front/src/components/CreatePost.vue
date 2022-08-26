@@ -27,7 +27,6 @@ export default
     /*récupérer l'image ajoutée au post */
     addImg(){
           this.file = this.$refs.file.files[0];
-          this.file = this.$refs.file.files[0];
           //console.log(this.file);
           if (this.file && this.file['type'].split('/')[0] === 'image') 
           {
@@ -84,7 +83,7 @@ export default
         const newPost = new FormData();
           newPost.append("content", this.content);
           //newPost.append("image", this.imagePreview);    
-          newPost.append("image", this.file, this.file.name);   
+          newPost.append("image", this.imageFile);   
           // plante le back --> penser à redémarrer avec rs dans le back   
           newPost.append("userId", localStorage.getItem("userId"));
          

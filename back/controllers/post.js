@@ -5,24 +5,19 @@ const Post = require('../models/Post')
 const fs = require('fs');
 
 /* POST: create a post */
-exports.createPost = (req, res, next) => 
-{  
-    const post = new Post(    
-    {
-	    userId: req.body.userId,
-        author: req.body.author,
-        date: req.body.date,
-	    content: req.body.content,
+exports.createPost = (req, res, next) => {
+    const postObject = req.body;
+    const post = new Post({
+        ...postObject,
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
-    if (req.file) 
-    {
-	    image= `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-    }
-    post.save()
-    .then(() => res.status(201).json({ message: 'Publication enregistrée' }))
-    .catch(error => res.status(400).json({ message: 'erreur création de post' }))};
+     console.log(req.file);
 
-
+    post
+      .save()
+      .then(() => res.status(201).json({ post }))
+      .catch((err) => console.log(err));
+  };
 
 
 /* GET: get all posts*/
@@ -47,7 +42,7 @@ exports.updatePost= (req, res, next) =>
    const postObject = req.file ? 
    {
        ...JSON.parse(req.body.post),
-       image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
    } : { ...req.body};
    delete postObject._userId;
    Post.findOne({ _id: req.params.id })

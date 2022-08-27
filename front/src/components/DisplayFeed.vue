@@ -122,7 +122,7 @@ export default
 		},
 
 		mounted() {
-			this.getAllPosts()
+			this.getAllPosts();
 		},
 	}
 </script>

@@ -1,4 +1,6 @@
 <script>
+//import DisplayFeed from './DisplayFeed.vue';
+
 export default 
 {
   name: 'CreatePost',
@@ -7,11 +9,10 @@ export default
       post: "",
       content: "",
       date: new Date().toLocaleString(),
-      image: "",
+      imageUrl: "",
       file: "",
       userId: localStorage.getItem('userId'),
       isCreate: false,
-      imageFile: null,
       imagePreview: null,
     }
   },
@@ -27,13 +28,10 @@ export default
     /*récupérer l'image ajoutée au post */
     addImg(){
           this.file = this.$refs.file.files[0];
-          //console.log(this.file);
           if (this.file && this.file['type'].split('/')[0] === 'image') 
           {
-         this.imageFile = this.file;
-         //console.log(this.imageFile);
          this.imagePreview = URL.createObjectURL(this.file);
-        console.log(this.imagePreview);
+        //console.log(this.imagePreview);
        }
        else 
        {
@@ -73,7 +71,7 @@ export default
           console.log(res);
           alert("Votre message a été publié avec succès");
           this.toggleIsCreate;
-          this.$emit("getAllPosts"); 
+          this.$emit('getAllPosts'); //trouver comment appeler methode depuis un autre composant
         })
         .catch(error => console.log('error', error))))
       
@@ -81,12 +79,11 @@ export default
       else // post avec image ***CA MARCHE PAS T___T***
       {
         const newPost = new FormData();
-          newPost.append("content", this.content);
-          //newPost.append("image", this.imagePreview);    
-          newPost.append("image", this.imageFile);   
-          // plante le back --> penser à redémarrer avec rs dans le back   
           newPost.append("userId", localStorage.getItem("userId"));
-         
+          newPost.append("author", this.author);
+          newPost.append("date", this.date);          
+          newPost.append("content", this.content);
+          newPost.append("imageUrl", this.file,);         
         for (const value of newPost.values()) 
         {
           console.log(value);
@@ -95,27 +92,24 @@ export default
         {
           method: 'POST',
           body: newPost, 
-          //body: JSON.stringify(newPost),
 
           headers: 
           {
             "Content-Type": "multipart/form-data",
-            //"Boundary": "--",
             "Authorization": "Bearer " + localStorage.getItem("token"),
           }
         };
         fetch('http://localhost:3000/groupomania/post', options)
-
-          .then((res => res.json()
-          .then(res => {
-          console.log(res);
-          alert("Votre message a été publié avec succès");
-          this.$emit("getAllPosts");    //ne semble pas fonctionner, 
-          //il faut reload la page pour que le dernier post s'affiche
+        .then(res => {
+            console.log(res);
+            return res.json();
+          })          
+          .then(resData => {
+          console.log(resData);
         })
-        .catch(error => console.log('error', error))))
+        .catch(error => console.log('error message: ', error))
       }
-    }
+    },
   }
 }
  
@@ -139,7 +133,6 @@ export default
         accept=".image/*" 
         @change="addImg()"
         aria-label="file selection" />
-        <!-- <p @click="onFileClick()">Ajouter cette image</p> -->
         <div v-if="imagePreview">
           <img :src=imagePreview />
         </div>

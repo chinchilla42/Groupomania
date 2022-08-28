@@ -2,6 +2,7 @@
 import NavHeader from '@/components/NavHeader.vue'
 import CreatePost from '@/components/CreatePost.vue'
 import DisplayFeed from '@/components/DisplayFeed.vue'
+import AdminPost from '@/components/AdminPost.vue'
 
 export default {
   name: 'HomePAge',
@@ -9,7 +10,8 @@ export default {
   components: {
     NavHeader,
     CreatePost ,
-    DisplayFeed
+    DisplayFeed,
+    AdminPost,
   },
 
   mounted() 
@@ -23,6 +25,7 @@ export default {
       admin:  localStorage.getItem('admin'),
       user: {},
       author: "",
+      isConnected: true,
     }
   },
   
@@ -56,10 +59,11 @@ export default {
 
 <template>
   <div class="container">
-    <NavHeader />
+    <NavHeader :isConnected="isConnected" />
     <main>
       <h1 > Bienvenue, {{ user.firstName }} {{ user.lastName}} !</h1>
-      <CreatePost :author=author />
+      <CreatePost :author=author v-if="admin == 'false'"/>
+      <AdminPost v-if="admin == 'true'" />
       <DisplayFeed />
     </main>
   </div>

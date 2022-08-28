@@ -39,7 +39,7 @@ export default
 				const options = {
 					method: "GET",
 					headers: {
-						// 'Content-Type': 'application/json',
+						'Content-Type': 'application/json',
 						'Authorization': "Bearer " + localStorage.getItem("token"),
 					},
 				}
@@ -57,7 +57,8 @@ export default
 			},
 
 			openEditPost(id) {
-				this.getOnePost(id);
+				console.log(id);
+				//this.getOnePost(id);
 				this.toggleEditPost();
 			},
 			/**toujours impossible d'accéder à la modification du post. 
@@ -139,9 +140,9 @@ export default
 					<div class="post__image">{{ post.image }}
 					</div>
 					<p class="post__content">{{ post.content }}</p>
-					<div class= "reaction">
-						<div class="like" @click="likePost(post._id)"><i class="fas fa-thumbs-up"></i> J'aime</div>
-						<div>{{ post.likes }} personne(s) <i class="fas fa-heart"></i> ceci</div>
+					<div class= "post__reaction">{{ post.likes }} personne(s)  <i class="fas fa-thumbs-up"></i> ceci</div>
+					<div >
+						<div class="like" @click="likePost(post._id)" v-if="admin == 'false'"><i class="fas fa-thumbs-up"></i> J'aime</div>
 					</div>
 					<div class="change" v-if="post.userId == userId || admin == 'true'">
 						<div class="modify_post" @click="openEditPost(post._id)">
@@ -167,7 +168,7 @@ export default
 
 <style>
 .create-post,
-.post {
+.post, .admin__post {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: column;
@@ -186,14 +187,11 @@ export default
 	flex-wrap: wrap;
 	width: auto;
 	justify-content: space-around;
-	border-top: solid 1px;
 }
 
-.reaction{
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-around;
-	align-items: baseline;
+.post__reaction{
+padding-top: 10px;
+padding-left: 2px;
 }
 
 .like,
@@ -205,7 +203,16 @@ export default
 }
 
 .like {
-	text-align: right;
-	padding-bottom: 10px;
+	padding: 10px;
+	margin: 10px;
+	text-align: center;
+	border-top: solid 1px #4E5166;
+	border-bottom: solid 1px #4E5166;
+
+
+}
+
+.like:hover{
+	font-weight: bold;
 }
 </style>

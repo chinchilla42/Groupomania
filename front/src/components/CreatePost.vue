@@ -119,7 +119,7 @@ export default
 
 <template>
   <div class="createPost">
-    <h2 @click="toggleIsCreate()">Créer une publication <i class="fas fa-plus"></i></h2>
+    <h3 @click="toggleIsCreate()">Créer une publication <i class="fas fa-plus"></i></h3>
     <div class="createForm" v-if="isCreate">
       <form  id="newPost" >
         <div :author="author"></div>
@@ -151,6 +151,11 @@ export default
   padding: 10px;
   border-radius: 5px;
   box-shadow: 2px 2px 5px 2px #4E5166;
+}
+
+h3{
+  text-align: center;
+  padding: 10px;
 }
 
 textarea {

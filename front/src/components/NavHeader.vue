@@ -9,18 +9,25 @@ export default {
             localStorage.clear();
             this.$router.push('/');	
             console.log("déconnexion");
-        }
+        },
+  
 
-    }
+
+    },
+    props:["isConnected"],
 };
 </script>
 
 <template>
     <header>
         <img src="../assets/icon-left-font.png" alt="Logo de Groupomania">
-        <nav>
+        <nav v-if="isConnected">
             <ul> 
-                <li @click="logout()"><i class="fas fa-power-off"></i> Déconnexion</li>   
+                <li @click="logout()"><i class="fas fa-power-off"></i> Déconnexion</li>  
+            </ul>
+        </nav>
+        <nav v-if="!isConnected">
+            <ul >
                 <li><router-link to="/signup">Créer un compte</router-link></li>
                 <li><router-link to="/">Se connecter</router-link></li>
             </ul>

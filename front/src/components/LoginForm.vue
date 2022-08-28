@@ -61,7 +61,7 @@ export default {
             <input type="password" name="password" v-model="password" required placeholder="****">
             <button type="submit" @click="login()">Connexion</button>
         </form>
-        <p>Pas encore membre ? <router-link to="/signup">Créez un compte !</router-link>
+        <p>Pas encore membre ?<br/> <router-link to="/signup">Créez un compte !</router-link>
         </p>
     </div>
 </template>

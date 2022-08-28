@@ -9,7 +9,7 @@ exports.createPost = (req, res, next) => {
     const postObject = req.body;
     const post = new Post({
         ...postObject,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file}`
     });
      console.log(req.file);
 
@@ -74,13 +74,13 @@ exports.updatePost= (req, res, next) =>
          }
          else
          {
-             //const filename = post.image.split('/images/')[1];
-             //fs.unlink(`images/${filename}`, () =>
-            //  {
+            // const filename = post.image.split('/images/')[1];
+            // fs.unlink(`images/${filename}`, () =>
+            //   {
                  Post.deleteOne({ _id: req.params.id })
                  .then (() => res.status(200).json({ message: 'Publication supprimée'}))
                  .catch( error => {res.status(401).json({ message: 'erreur 401'})});
-            //  });
+            //   });
          }
      })      
      .catch((error) => {res.status(500).json({message: 'erreur 500'});});

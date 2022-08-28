@@ -16,7 +16,7 @@ export default {
                 firstName: this.firstName,
                 lastName: this.lastName,
                 email: this.email,
-                password: this.password
+                password: this.password,
             }
             console.log(userData);
             /*ajouter sécurisation mdp et regex pour email pro*/
@@ -62,9 +62,9 @@ export default {
             <input type="email" name="email" v-model="email" required placeholder="nom@groupomania.fr">
             <label>Mot de passe</label>
             <input type="password" name="password" v-model="password" required placeholder="****">
-            <button type="sublit" @click="signup()">Inscription</button>
+            <button type="submit" @click="signup()">Inscription</button>
         </form>
-        <p>Déjà membre ? <router-link to="/">Connectez-vous !</router-link>
+        <p>Déjà membre ? <br/> <router-link to="/">Connectez-vous !</router-link>
         </p>
     </div>
 </template>

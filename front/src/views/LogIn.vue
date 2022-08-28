@@ -13,7 +13,7 @@ export default
     data() 
     {
         return {
-            isAuth: false,
+            isConnected: false,
         }
     }
 }
@@ -24,7 +24,7 @@ export default
 
 <template>
     <div class="container">
-        <NavHeader />
+        <NavHeader :isConnected="isConnected" />
         <main>
             <LoginForm />
         </main>

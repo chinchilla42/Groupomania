@@ -9,9 +9,9 @@ exports.createPost = (req, res, next) => {
     const postObject = req.body;
     const post = new Post({
         ...postObject,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file}`
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
-    console.log(req.file);
+    console.log(req.file.filename);
 
     post
       .save()

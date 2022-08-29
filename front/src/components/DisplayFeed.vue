@@ -137,7 +137,8 @@ export default
 					<div class="post__user">
 						<p>Le {{ post.date }}, <span class="writer">{{ post.author }} </span> a dit : </p>
 					</div>
-					<div class="post__image">{{ post.image }}
+					<div class="post__image" >
+						<img :src="post.imageUrl">
 					</div>
 					<p class="post__content">{{ post.content }}</p>
 					<div class= "post__reaction">{{ post.likes }} personne(s)  <i class="fas fa-thumbs-up"></i> ceci</div>

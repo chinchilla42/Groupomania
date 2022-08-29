@@ -31,7 +31,7 @@ export default
       {
         this.imagePreview = URL.createObjectURL(this.file);
         console.log(this.imagePreview);
-        this.imageUrl = this.file;
+        //this.imageUrl = this.file;
       }
       // else 
       // {
@@ -82,7 +82,7 @@ export default
           newPost.append("author", this.author);
           newPost.append("date", this.date);          
           newPost.append("content", this.content);
-          newPost.append("imageUrl", this.imageUrl,);         
+          newPost.append("imageUrl", this.file);         
         for (const value of newPost.values()) 
         {
           console.log(value);
@@ -95,7 +95,6 @@ export default
           {
             //"Content-Type": "multipart/form-data",
             "Authorization": "Bearer " + localStorage.getItem("token"),
-            //"mode": 'no-cors',
           }
         };
         fetch('http://localhost:3000/groupomania/post', options)
@@ -126,9 +125,9 @@ export default
         <label for="file"><i class="fas fa-file-image"></i> Ajouter une image</label>
         <input 
         type="file" 
-        class="imageUrl"
+        class="image"
         ref="file" 
-        id="imageUrl"
+        id="file"
         name="file"
         @change="addImg()"
         aria-label="file selection" />

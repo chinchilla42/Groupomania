@@ -19,7 +19,7 @@ export default {
                 password: this.password,
             }
             console.log(userData);
-            /*ajouter sécurisation mdp et regex pour email pro*/
+            /* TO DO : ajouter sécurisation mdp et regex pour email pro*/
             
             // let password = this.input.password;
             // let regex = /^[a-zA-Z\-'çñàéèêëïîôüù ]{2,}$/;

@@ -11,7 +11,7 @@ exports.createPost = (req, res, next) => {
         ...postObject,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file}`
     });
-     console.log(req.file);
+    console.log(req.file);
 
     post
       .save()

@@ -59,7 +59,7 @@ export default {
             <input type="email" name="email" v-model="email" required placeholder="nom@groupomania.fr">
             <label>Mot de passe</label>
             <input type="password" name="password" v-model="password" required placeholder="****">
-            <button type="submit" @click="login()">Connexion</button>
+            <button type="button" @click="login()">Connexion</button>
         </form>
         <p>Pas encore membre ?<br/> <router-link to="/signup">Créez un compte !</router-link>
         </p>

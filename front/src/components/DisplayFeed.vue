@@ -134,23 +134,25 @@ export default
 		<div class="feeds_post">
 			<div v-for="post in posts.slice().reverse()" :key="post.id" class="post">
 				<div class="post__box">
-					<div class="post__user">
-						<p>Le {{ post.date }}, <span class="writer">{{ post.author }} </span> a dit : </p>
-					</div>
-					<div class="post__image" >
-						<img :src="post.imageUrl">
-					</div>
-					<p class="post__content">{{ post.content }}</p>
-					<div class= "post__reaction">{{ post.likes }} personne(s)  <i class="fas fa-thumbs-up"></i> ceci</div>
-					<div >
-						<div class="like" @click="likePost(post._id)" v-if="admin == 'false'"><i class="fas fa-thumbs-up"></i> J'aime</div>
-					</div>
-					<div class="change" v-if="post.userId == userId || admin == 'true'">
-						<div class="modify_post" @click="openEditPost(post._id)">
-							<p><i class="fas fa-pen"></i> Modifier</p>
+					<div class="post__data" >
+						<div class="post__user">
+							<p>Le {{ post.date }}, <span class="writer">{{ post.author }} </span> a dit : </p>
 						</div>
-						<div class="delete-post" @click="deletePost(post._id)">
-							<p><i class=" fas fa-trash"></i> Supprimer</p>
+						<p class="post__content">{{ post.content }}</p>
+						<div class="post__image" v-if="post.imageUrl" >
+							<img :src="post.imageUrl">
+						</div>
+						<div class= "post__reaction">{{ post.likes }} personne(s)  <i class="fas fa-thumbs-up"></i> ceci</div>
+						<div >
+							<div class="like" @click="likePost(post._id)" v-if="admin == 'false'"><i class="fas fa-thumbs-up"></i> J'aime</div>
+						</div>
+						<div class="change" v-if="post.userId == userId || admin == 'true'">
+							<div class="modify_post" @click="openEditPost(post._id)">
+								<p><i class="fas fa-pen"></i> Modifier</p>
+							</div>
+							<div class="delete-post" @click="deletePost(post._id)">
+								<p><i class=" fas fa-trash"></i> Supprimer</p>
+							</div>
 						</div>
 					</div>
 					<div class="edit_post" v-if="isEdit">
@@ -179,6 +181,14 @@ export default
 	box-shadow: 2px 2px 5px 2px #4E5166;
 }
 
+.post__data{
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	margin: 5px;
+	padding: 5px;
+}
+
 .writer {
 	font-weight: bold;
 }
@@ -203,12 +213,30 @@ padding-left: 2px;
 
 }
 
+.post__image{
+	display: flex;
+	flex-wrap: wrap;
+	margin: 10px;
+    overflow: hidden;
+    flex-basis: auto;
+}
+
+main img{
+	margin-left: auto;
+  margin-right: auto;    
+  object-fit: cover;
+    max-height: 100%;
+	height: auto;;
+    max-width: 100%;
+	width: auto;
+
+}
+
 .like {
 	padding: 10px;
 	margin: 10px;
-	text-align: center;
-	border-top: solid 1px #4E5166;
-	border-bottom: solid 1px #4E5166;
+	text-align: right;
+	
 
 
 }

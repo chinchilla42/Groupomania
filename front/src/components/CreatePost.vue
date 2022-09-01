@@ -33,10 +33,10 @@ export default
         console.log(this.imagePreview);
         //this.imageUrl = this.file;
       }
-      // else 
-      // {
-      //   this.$refs.file.value = null;
-      // }
+      else 
+      {
+        this.$refs.file.value = null;
+      }
     },
     /*envoyer le post au back */
     publishContent() {
@@ -44,7 +44,7 @@ export default
       {
         alert("Votre publication est vide");
       }
-      else if (this.file === "") // post sans image OK
+      else if (this.file === "") // post sans image 
       {
          
         const newContent = {
@@ -70,12 +70,12 @@ export default
           console.log(res);
           alert("Votre message a été publié avec succès");
           this.toggleIsCreate;
-          this.$emit('getAllPosts'); //trouver comment appeler methode depuis un autre composant
+          this.$emit('getAllPosts');
         })
         .catch(error => console.log('error', error))))
       
       }
-      else // post avec image ***CA MARCHE PAS T___T***
+      else // post avec image *
       {
         const newPost = new FormData();
           newPost.append("userId", localStorage.getItem("userId"));
@@ -104,6 +104,9 @@ export default
           })          
           .then(resData => {
           console.log(resData);
+          alert("Votre message a été publié avec succès");
+          this.toggleIsCreate;
+          this.$emit('getAllPosts'); //trouver comment appeler methode depuis un autre composant
         })
         .catch(error => console.log('error message: ', error))
       }
@@ -121,7 +124,7 @@ export default
     <div class="createForm" v-if="isCreate">
       <form id="newPost">
         <div :author="author"></div>
-        <textarea wrap="soft" rows="10" name="content" v-model="content" placeholder="Quoi de neuf ?"></textarea>
+        <textarea wrap="soft" rows="5" name="content" v-model="content" placeholder="Quoi de neuf ?"></textarea>
         <label for="file"><i class="fas fa-file-image"></i> Ajouter une image</label>
         <input 
         type="file" 
@@ -129,6 +132,7 @@ export default
         ref="file" 
         id="file"
         name="file"
+        accept="image/*"
         @change="addImg()"
         aria-label="file selection" />
         <div v-if="imagePreview">
@@ -160,4 +164,5 @@ textarea {
   margin: 5px;
   padding: 5px;
 }
+
 </style>

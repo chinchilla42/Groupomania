@@ -87,25 +87,23 @@ export default {
   height: 100%;
 }
 
+h1{
+  margin-bottom: 15px;
+}
+
 h2{
   text-align: center;
   margin: 10px;
   padding: 10px;
 }
 
-
-
-
-
 .post p{
   text-align: left;
   margin: 5px;
 }
 
-
-
 .fas{
-    color: #FFD7D7;
+  color: #FFD7D7;
   padding-right: 5px;
 }
 .fas:hover{

@@ -5,7 +5,6 @@ export default
 		name: "DisplayFeed",
 		data() {
 			return {
-				isEdit: false,
 				userId: localStorage.getItem("userId"),
 				admin: localStorage.getItem("admin"),
 				posts: [],
@@ -31,44 +30,6 @@ export default
 						this.posts = postData;
 					})
 					.catch(error => console.log(error));
-			},
-
-			/* récupérer un post  grâce à son ID*/
-			getOnePost(id) {
-				const url = `http://localhost:3000/groupomania/post/${id}`;
-				const options = {
-					method: "GET",
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': "Bearer " + localStorage.getItem("token"),
-					},
-				}
-				fetch(url, options)
-					.then(res => res.json())
-					.then(singlePostData => {
-						this.post = singlePostData;
-					})
-					.catch(error => console.log(error));
-			},
-
-			/* essaie de créer 2 fonctions pour afficher la partie modification */
-			toggleEditPost() {
-				this.isEdit = !this.isEdit;
-			},
-
-			openEditPost(id) {
-				console.log(id);
-				//this.getOnePost(id);
-				this.toggleEditPost();
-			},
-			/**toujours impossible d'accéder à la modification du post. 
-			 * j'ai tenté d'ajouter une fonction pour récupérer le post en question et essayer d'en extraire l'id
-			 * mais ça ne mène à rien pour l'instant
-			  **/
-
-			/* modifier un post*/
-			editPost() {
-				//à faire
 			},
 
 			/* supprimer un post */
@@ -116,7 +77,7 @@ export default
 				};
 				fetch(url, options)
 					.then((res => res.json()
-						.then(res => { console.log(res); this.getAllPosts();})
+						.then(res => { console.log(res); this.getAllPosts(); })
 						.catch(error => console.log('error', error))))
 			}
 			/*reste à faire : montrer que l'utilisateur a liké le post */
@@ -124,7 +85,8 @@ export default
 
 		mounted() {
 			this.getAllPosts();
-		},
+		}
+
 	}
 </script>
 
@@ -134,34 +96,30 @@ export default
 		<div class="feeds_post">
 			<div v-for="post in posts.slice().reverse()" :key="post.id" class="post">
 				<div class="post__box">
-					<div class="post__data" >
+					<div class="post__data">
 						<div class="post__user">
-							<p>Le {{ post.date }}, <span class="writer">{{ post.author }} </span> a dit : </p>
+							<p>Le {{  post.date  }}, <span class="writer">{{  post.author  }} </span> a dit : </p>
 						</div>
-						<p class="post__content">{{ post.content }}</p>
-						<div class="post__image" v-if="post.imageUrl" >
+						<p class="post__content">{{  post.content  }}</p>
+						<div class="post__image" v-if="post.imageUrl">
 							<img :src="post.imageUrl">
 						</div>
-						<div class= "post__reaction">{{ post.likes }} personne(s)  <i class="fas fa-thumbs-up"></i> ceci</div>
-						<div >
-							<div class="like" @click="likePost(post._id)" v-if="admin == 'false'"><i class="fas fa-thumbs-up"></i> J'aime</div>
+						<div class="post__reaction">{{  post.likes  }} personne(s) <i class="fas fa-thumbs-up"></i> ceci
+						</div>
+						<div>
+							<div class="like" @click="likePost(post._id)" v-if="admin == 'false'"><i
+									class="fas fa-thumbs-up"></i> J'aime</div>
 						</div>
 						<div class="change" v-if="post.userId == userId || admin == 'true'">
-							<div class="modify_post" @click="openEditPost(post._id)">
-								<p><i class="fas fa-pen"></i> Modifier</p>
+							<div class="modify_post">
+								<router-link :to="{ name: 'editPage', params: {id: post._id }}">
+									<p><i class="fas fa-pen"></i> Modifier</p>
+								</router-link>
 							</div>
 							<div class="delete-post" @click="deletePost(post._id)">
 								<p><i class=" fas fa-trash"></i> Supprimer</p>
 							</div>
 						</div>
-					</div>
-					<div class="edit_post" v-if="isEdit">
-						<form name="editPost" id="editPost">
-							<input type="text" required v-model="this.content" aria-label="contenu">
-							<input type="file" ref="imageUrl" name="image" id="imageUrl" accept="image/*"
-								aria-label="image">
-							<button type="submit" @click="editPost(post._id)">Modifier</button>
-						</form>
 					</div>
 				</div>
 			</div>
@@ -171,7 +129,8 @@ export default
 
 <style>
 .create-post,
-.post, .admin__post {
+.post,
+.admin__post {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: column;
@@ -181,7 +140,7 @@ export default
 	box-shadow: 2px 2px 5px 2px #4E5166;
 }
 
-.post__data{
+.post__data {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: column;
@@ -200,9 +159,9 @@ export default
 	justify-content: space-around;
 }
 
-.post__reaction{
-padding-top: 10px;
-padding-left: 2px;
+.post__reaction {
+	padding-top: 10px;
+	padding-left: 2px;
 }
 
 .like,
@@ -213,21 +172,22 @@ padding-left: 2px;
 
 }
 
-.post__image{
+.post__image {
 	display: flex;
 	flex-wrap: wrap;
 	margin: 10px;
-    overflow: hidden;
-    flex-basis: auto;
+	overflow: hidden;
+	flex-basis: auto;
 }
 
-main img{
+main img {
 	margin-left: auto;
-  margin-right: auto;    
-  object-fit: cover;
-    max-height: 100%;
-	height: auto;;
-    max-width: 100%;
+	margin-right: auto;
+	object-fit: cover;
+	max-height: 100%;
+	height: auto;
+	;
+	max-width: 100%;
 	width: auto;
 
 }
@@ -236,12 +196,12 @@ main img{
 	padding: 10px;
 	margin: 10px;
 	text-align: right;
-	
+
 
 
 }
 
-.like:hover{
+.like:hover {
 	font-weight: bold;
 }
 </style>

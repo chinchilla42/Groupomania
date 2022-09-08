@@ -70,7 +70,7 @@ export default
           console.log(res);
           alert("Votre message a été publié avec succès");
           this.toggleIsCreate;
-          this.$emit('getAllPosts');
+          this.getAllPosts(); 
         })
         .catch(error => console.log('error', error))))
       
@@ -106,7 +106,7 @@ export default
           console.log(resData);
           alert("Votre message a été publié avec succès");
           this.toggleIsCreate;
-          this.$emit('getAllPosts'); //trouver comment appeler methode depuis un autre composant
+          this.getAllPosts(); 
         })
         .catch(error => console.log('error message: ', error))
       }

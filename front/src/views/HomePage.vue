@@ -5,7 +5,7 @@ import DisplayFeed from '@/components/DisplayFeed.vue'
 import AdminPost from '@/components/AdminPost.vue'
 
 export default {
-  name: 'HomePAge',
+  name: 'HomePage',
 
   components: {
     NavHeader,
@@ -51,7 +51,6 @@ export default {
       })
       .catch(error => console.log(error));
     },
-
   },
 
 };

@@ -122,28 +122,6 @@ export default {
                     })
                     .catch(error => console.log('error message: ', error))
             }
-
-      const options =
-        {
-        method: 'PUT',
-        body: formData,
-        headers:
-        {
-            "Authorization": "Bearer " + localStorage.getItem("token"),
-        }
-        };
-        fetch(`http://localhost:3000/groupomania/post/${id}`, options)
-            .then(res => {
-                console.log(res);
-                return res.json();
-            })
-            .then(resData => {
-                console.log(resData);
-                alert("Votre message a été modifié avec succès");
-                this.$router.push('/HomePage');
-            })
-            .catch(error => console.log('error message: ', error))
-
         }
     }
 }

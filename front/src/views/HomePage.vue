@@ -18,6 +18,14 @@ export default {
   {
     this.getUserInfo();
   },
+  beforeUpdate(){
+        if(localStorage.getItem("token") == null)
+        {
+            this.$router.push("/");
+        } else{
+            console.log("ok");
+        }
+    },
   
   data(){
     return {
@@ -31,6 +39,7 @@ export default {
   
   methods:
   {
+
     /*récupérer les info de l'utilisateur connecté*/ 
     getUserInfo() 
     {

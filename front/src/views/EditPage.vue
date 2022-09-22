@@ -11,16 +11,17 @@ export default {
         return {
             isConnected: true,
             postId: this.$route.params.id,
-            post: [],
             content: "",
             date: "",
             imageUrl: "",
             file: "",
             userId: localStorage.getItem('userId'),
+            newImage: "",
+            newContent: "",
             imagePreview: null,
         }
     },
-    mounted() {
+    created() {
         this.getOnePost(this.postId);
     },
 
@@ -41,15 +42,19 @@ export default {
             fetch(url, options)
                 .then(res => res.json())
                 .then(singlePostData => {
-                    this.post = singlePostData;
-                    console.log(this.post);
+                    this.userId = singlePostData.userId;
+                    this.author = singlePostData.author;
+                    this.date = singlePostData.date;
+                    this.content = singlePostData.content;
+                    this.imageUrl = singlePostData.imageUrl;
                 })
                 .catch(error => console.log(error));
         },
 
         /* modifier un post*/
-        editPost(id) {
-            //console.log(this.postId);
+        editPost(id) 
+        {
+            console.log("test");
             if (this.content == "" && this.file === "") // si le post vide
             {
                 alert("Votre publication est vide");
@@ -79,8 +84,7 @@ export default {
                         .then(res => {
                             console.log(res);
                             alert("Votre message a été modifié avec succès");
-                            this.toggleIsCreate;
-                            this.getAllPosts();
+                            this.$router.push('/HomePage');                            
                         })
                         .catch(error => console.log('error', error))))
 
@@ -91,7 +95,7 @@ export default {
                 newPost.append("userId", localStorage.getItem("userId"));
                 newPost.append("author", this.author);
                 newPost.append("date", this.date);
-                newPost.append("content", this.content);
+                newPost.append("content", this.newContent);
                 newPost.append("imageUrl", this.file);
                 for (const value of newPost.values()) {
                     console.log(value);
@@ -118,6 +122,28 @@ export default {
                     })
                     .catch(error => console.log('error message: ', error))
             }
+
+      const options =
+        {
+        method: 'PUT',
+        body: formData,
+        headers:
+        {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+        }
+        };
+        fetch(`http://localhost:3000/groupomania/post/${id}`, options)
+            .then(res => {
+                console.log(res);
+                return res.json();
+            })
+            .then(resData => {
+                console.log(resData);
+                alert("Votre message a été modifié avec succès");
+                this.$router.push('/HomePage');
+            })
+            .catch(error => console.log('error message: ', error))
+
         }
     }
 }
@@ -129,9 +155,12 @@ export default {
         <NavHeader />
         <div class="edit_post">
             <form name="editPost" id="editPost">
-                <input type="text" required v-model="this.content"  v-bind:placeholder="content" aria-label="contenu">
+                <textarea type="text" aria-label="contenu" v-model="this.content"></textarea>
+                <div class="post__image" v-if="this.imageUrl">
+					<img :src="this.imageUrl">
+				</div>
                 <input type="file" ref="imageUrl" name="image" id="imageUrl" accept="image/*" aria-label="image">
-                <button type="button" @click="editPost()">Modifier</button>
+                <button type="button" @click="editPost(this.postId)">Modifier</button>
             </form>
         </div>
     </div>

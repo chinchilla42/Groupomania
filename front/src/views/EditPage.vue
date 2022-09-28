@@ -51,13 +51,28 @@ export default {
                 .catch(error => console.log(error));
         },
 
+        addImg()
+    {
+      this.file = this.$refs.file.files[0];
+      if (this.file && this.file['type'].split('/')[0] === 'image') 
+      {
+        this.imagePreview = URL.createObjectURL(this.file);
+        console.log(this.imagePreview);
+        this.imageUrl = this.file;
+      }
+      else 
+      {
+        this.$refs.file.value = null;
+      }
+    },
+
         /* modifier un post*/
-        editPost(id) 
+        editPost() 
         {
-            console.log("test");
+            console.log(this.postId);
             if (this.content == "" && this.file === "") // si le post vide
             {
-                alert("Votre publication est vide");
+                 alert("Votre publication est vide");
             }
             else if (this.file === "") // post sans image 
             {
@@ -79,7 +94,7 @@ export default {
                         "Authorization": "Bearer " + localStorage.getItem("token"),
                     }
                 };
-                fetch(`http://localhost:3000/groupomania/post/${id}`, options)
+                fetch(`http://localhost:3000/groupomania/post/${this.postId}`, options)
                     .then((res => res.json()
                         .then(res => {
                             console.log(res);
@@ -88,14 +103,14 @@ export default {
                         })
                         .catch(error => console.log('error', error))))
 
-            }
+           }
             else // post avec image *
             {
                 const newPost = new FormData();
                 newPost.append("userId", localStorage.getItem("userId"));
                 newPost.append("author", this.author);
                 newPost.append("date", this.date);
-                newPost.append("content", this.newContent);
+                newPost.append("content", this.content);
                 newPost.append("imageUrl", this.file);
                 for (const value of newPost.values()) {
                     console.log(value);
@@ -109,7 +124,7 @@ export default {
                         "Authorization": "Bearer " + localStorage.getItem("token"),
                     }
                 };
-                fetch(`http://localhost:3000/groupomania/post/${id}`, options)
+                fetch(`http://localhost:3000/groupomania/post/${this.postId}`, options)
                     .then(res => {
                         console.log(res);
                         return res.json();
@@ -117,8 +132,7 @@ export default {
                     .then(resData => {
                         console.log(resData);
                         alert("Votre message a été modifié avec succès");
-                        this.toggleIsCreate;
-                        this.getAllPosts();
+                        this.$router.push('/HomePage');
                     })
                     .catch(error => console.log('error message: ', error))
             }
@@ -133,12 +147,23 @@ export default {
         <NavHeader />
         <div class="edit_post">
             <form name="editPost" id="editPost">
-                <textarea type="text" aria-label="contenu" v-model="this.content"></textarea>
-                <div class="post__image" v-if="this.imageUrl">
-					<img :src="this.imageUrl">
+                <textarea type="text" aria-label="contenu" v-model="content"></textarea>
+                <div class="post__image" v-if="imageUrl">
+					<img :src="imageUrl">
 				</div>
-                <input type="file" ref="imageUrl" name="image" id="imageUrl" accept="image/*" aria-label="image">
-                <button type="button" @click="editPost(this.postId)">Modifier</button>
+                <input 
+                    type="file" 
+                    class="image"
+                    ref="file" 
+                    id="file"
+                    name="file"
+                    accept="image/*"
+                    @change="addImg()"
+                    aria-label="file selection" />
+                <div v-if="imagePreview">
+                    <img :src=imagePreview />  
+                </div>              
+                <button type="button" @click="editPost()">Modifier</button>
             </form>
         </div>
     </div>

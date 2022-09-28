@@ -79,8 +79,13 @@ export default
 					.then((res => res.json()
 						.then(res => { console.log(res); this.getAllPosts(); })
 						.catch(error => console.log('error', error))))
-			}
+			},
+
 			/*reste à faire : montrer que l'utilisateur a liké le post */
+			checkLike(id)
+			{
+				
+			}
 		},
 
 		mounted() {

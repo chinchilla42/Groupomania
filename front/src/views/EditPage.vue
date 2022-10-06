@@ -69,7 +69,6 @@ export default {
         /* modifier un post*/
         editPost() 
         {
-            console.log(this.postId);
             if (this.content == "" && this.file === "") // si le post vide
             {
                  alert("Votre publication est vide");

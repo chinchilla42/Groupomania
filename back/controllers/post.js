@@ -6,19 +6,7 @@ const fs = require('fs');
 
 /* POST: create a post */
 exports.createPost = (req, res, next) => {
-    const postObject = req.body;
-    const post = new Post({
-        ...postObject,
-    });
-    if (req.file)
-    {
-        post.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-    }
-
-    post
-      .save()
-      .then(() => res.status(201).json({ post }))
-      .catch((err) => console.log(err));
+     
   };
 
 /* GET: get all posts*/
@@ -40,13 +28,17 @@ exports.findPost = (req, res, next) =>
 /* PUT: update a post */
 exports.updatePost= (req, res, next) => 
 {
-   const postObject = req.file ? 
-   {
-       ...JSON.parse(req.body.post),
-       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-   } : { ...req.body};
-
-delete postObject._userId;
+   const newPost = {} 
+    if (req.body.content)
+    {
+        newPost.content = req.body.content;
+    }
+    if (req.file)
+    {
+        newPost.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+    }
+    
+    delete postObject._userId;
    Post.findOne({ _id: req.params.id })
    .then( post => 
    {
@@ -56,7 +48,7 @@ delete postObject._userId;
        }
        else
        {
-           Post.updateOne({ _id: req.params.id}, { ...postObject, _id: req.params.id })
+           Post.updateOne(req.params.id, newPost)
            .then (() => res.status(200).json({ message: 'Publication modifiée'}))
            .catch(error => res.status(401).json({ error }));
        }
@@ -74,17 +66,14 @@ delete postObject._userId;
          {
             res.status(401).json({message: 'Non autorisé'});
          }
-         else
-         {
-             const filename = post.image.split('/images/')[1];
-             fs.unlink(`images/${filename}`, () =>
+        const filename = post.imageUrl.split('/images/')[1];
+        fs.unlink(`./images/${filename}`, () =>
                {
                  Post.deleteOne({ _id: req.params.id })
                  .then (() => res.status(200).json({ message: 'Publication supprimée'}))
                  .catch( error => {res.status(401).json({ message: 'erreur 401'})});
-               });
-         }
-     })      
+               })
+         })      
      .catch((error) => {res.status(500).json({message: 'erreur 500'});});
  };
 
@@ -129,4 +118,28 @@ exports.likePost = (req, res, next) =>
         .catch((error) => res.status(400).json({ error }))
         }
     })
+}
+
+/*check post like */
+exports.checkPostLike = (req, res, next) => 
+{
+    const userId = req.body.userId;
+    const postId = req.params.id;
+    Post.findOne
+    (
+        { _id: postId }
+    )
+    .then((post) => 
+    {
+        if (post.usersLiked.includes(userId)) 
+        {
+            return res.status(200).json({message: 'YES'})
+        }
+        else
+        {
+            return res.status(200).json({message: 'NO'})
+        }
+    })
+    .catch((error) => res.status(400).json({ error }))
+
 }

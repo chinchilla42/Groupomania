@@ -1,5 +1,6 @@
 <script>
-//import DisplayFeed from './DisplayFeed.vue';
+
+//import getAllPosts from './DisplayFeed.vue';
 export default 
 {
   name: 'CreatePost',

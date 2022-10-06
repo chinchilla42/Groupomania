@@ -81,10 +81,27 @@ export default
 						.catch(error => console.log('error', error))))
 			},
 
-			/*reste à faire : montrer que l'utilisateur a liké le post */
-			checkLike(id)
-			{
-				
+			/*montrer que l'utilisateur a liké le post */
+			checkLike(id) {
+				const url = `http://localhost:3000/groupomania/post/${id}/like`;
+				const options = {
+					method: 'GET',
+					headers:
+					{
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + localStorage.getItem("token"),
+					}
+				};
+				fetch(url, options)
+					.then(res => {
+						if (res.data.message === 'YES') {
+							this.postLiked = true;
+						}
+						else {
+							this.postLiked = false;
+						}
+					})
+					.catch(error => console.log(error));
 			}
 		},
 
@@ -103,14 +120,15 @@ export default
 				<div class="post__box">
 					<div class="post__data">
 						<div class="post__user">
-							<p>Le {{  post.date  }}, <span class="writer">{{  post.author  }} </span> a dit : </p>
+							<p>Le {{ post.date }}, <span class="writer">{{ post.author }} </span> a dit : </p>
 						</div>
-						<p class="post__content">{{  post.content  }}</p>
+						<p class="post__content">{{ post.content }}</p>
 						<div class="post__image" v-if="post.imageUrl">
 							<img :src="post.imageUrl">
 						</div>
-						<div class="post__reaction">{{  post.likes  }} personne(s) <i class="fas fa-thumbs-up"></i> ceci
+						<div class="post__reaction">{{ post.likes }} personne(s) <i class="fas fa-thumbs-up"></i> ceci
 						</div>
+						<!-- <div class="postLiked" v-if="postLiked == 'true'"> -->
 						<div>
 							<div class="like" @click="likePost(post._id)" v-if="admin == 'false'"><i
 									class="fas fa-thumbs-up"></i> J'aime</div>
@@ -175,6 +193,10 @@ export default
 	color: #FD2D01;
 	padding: 5px;
 
+}
+
+.postLiked {
+	color: gray;
 }
 
 .post__image {

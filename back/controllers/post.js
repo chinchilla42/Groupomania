@@ -6,7 +6,19 @@ const fs = require('fs');
 
 /* POST: create a post */
 exports.createPost = (req, res, next) => {
-     
+    const postObject = req.body;
+    const post = new Post({
+        ...postObject,
+    });
+    if (req.file)
+    {
+        post.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+    }
+
+    post
+      .save()
+      .then(() => res.status(201).json({ post }))
+      .catch((err) => console.log(err));
   };
 
 /* GET: get all posts*/
@@ -26,19 +38,45 @@ exports.findPost = (req, res, next) =>
 };
 
 /* PUT: update a post */
+// exports.updatePost= (req, res) => 
+// {
+//    const newPost = {} 
+//     if (req.body.content)
+//     {
+//         newPost.content = req.body.content;
+//     }
+//     if (req.file)
+//     {
+//         newPost.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+//     }
+    
+//     // delete postObject._userId;
+//    Post.findOne({ _id: req.params.id })
+//    .then( post => 
+//    {
+//        if (post.userId != req.auth.userId)
+//        {
+//            res.status(401).json({message: 'Non autorisé'});
+//        }
+//        else
+//        {
+//            Post.updateOne(req.params.id, newPost)
+//            .then (() => res.status(200).json({ message: 'Publication modifiée'}))
+//            .catch(error => res.status(401).json({ error }));
+//        }
+//    })
+//    .catch ((error) => {res.status(400).json({ error})});
+// };
+
 exports.updatePost= (req, res, next) => 
 {
-   const newPost = {} 
-    if (req.body.content)
-    {
-        newPost.content = req.body.content;
-    }
-    if (req.file)
-    {
-        newPost.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-    }
-    
-    delete postObject._userId;
+   const postObject = req.file ? 
+   {
+       ...JSON.parse(req.body.post),
+       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+   } : { ...req.body};
+
+delete postObject._userId;
    Post.findOne({ _id: req.params.id })
    .then( post => 
    {
@@ -48,7 +86,7 @@ exports.updatePost= (req, res, next) =>
        }
        else
        {
-           Post.updateOne(req.params.id, newPost)
+           Post.updateOne({ _id: req.params.id}, { ...postObject, _id: req.params.id })
            .then (() => res.status(200).json({ message: 'Publication modifiée'}))
            .catch(error => res.status(401).json({ error }));
        }
@@ -66,14 +104,24 @@ exports.updatePost= (req, res, next) =>
          {
             res.status(401).json({message: 'Non autorisé'});
          }
-        const filename = post.imageUrl.split('/images/')[1];
-        fs.unlink(`./images/${filename}`, () =>
+         if (post.imageUrl)
+         {
+            const filename = post.imageUrl.split('/images/')[1];
+            fs.unlink(`./images/${filename}`, () =>
                {
                  Post.deleteOne({ _id: req.params.id })
                  .then (() => res.status(200).json({ message: 'Publication supprimée'}))
                  .catch( error => {res.status(401).json({ message: 'erreur 401'})});
                })
-         })      
+        }
+        else
+        {
+                Post.deleteOne({ _id: req.params.id })
+                         .then (() => res.status(200).json({ message: 'Publication supprimée'}))
+                         .catch( error => {res.status(401).json({ message: 'erreur 401'})});
+        }
+    })      
+    
      .catch((error) => {res.status(500).json({message: 'erreur 500'});});
  };
 

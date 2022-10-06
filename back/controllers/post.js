@@ -38,43 +38,17 @@ exports.findPost = (req, res, next) =>
 };
 
 /* PUT: update a post */
-// exports.updatePost= (req, res) => 
-// {
-//    const newPost = {} 
-//     if (req.body.content)
-//     {
-//         newPost.content = req.body.content;
-//     }
-//     if (req.file)
-//     {
-//         newPost.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-//     }
-    
-//     // delete postObject._userId;
-//    Post.findOne({ _id: req.params.id })
-//    .then( post => 
-//    {
-//        if (post.userId != req.auth.userId)
-//        {
-//            res.status(401).json({message: 'Non autorisé'});
-//        }
-//        else
-//        {
-//            Post.updateOne(req.params.id, newPost)
-//            .then (() => res.status(200).json({ message: 'Publication modifiée'}))
-//            .catch(error => res.status(401).json({ error }));
-//        }
-//    })
-//    .catch ((error) => {res.status(400).json({ error})});
-// };
-
 exports.updatePost= (req, res, next) => 
 {
-   const postObject = req.file ? 
-   {
-       ...JSON.parse(req.body.post),
-       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-   } : { ...req.body};
+    const postObject = req.body;
+    const newPost = new Post({
+        ...postObject,
+    });
+    if (req.file)
+    {
+        newPost.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+        console.log(newPost.imageUrl);
+    } 
 
 delete postObject._userId;
    Post.findOne({ _id: req.params.id })
@@ -86,7 +60,7 @@ delete postObject._userId;
        }
        else
        {
-           Post.updateOne({ _id: req.params.id}, { ...postObject, _id: req.params.id })
+           Post.updateOne({ _id: req.params.id}, { $set: newPost, _id: req.params.id })
            .then (() => res.status(200).json({ message: 'Publication modifiée'}))
            .catch(error => res.status(401).json({ error }));
        }

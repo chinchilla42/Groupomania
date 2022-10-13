@@ -10,7 +10,45 @@ export default {
         }
     },
     methods: {
-         signup() {
+        checkInput ()
+        {
+            /* regex */
+            let nameRegex = /^[a-zA-Z\-'çñàéèêëïîôüù ]{2,}$/;
+            let passwordRegex =  /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,30})$/;
+            let emailRegex = /^[^@&"/()!_$*€£`+=;?#]+@groupomania.fr$/;            
+            
+            if (nameRegex.test(this.firstName) == true) 
+            {
+                if (nameRegex.test(this.lastName) == true) 
+                {
+                    if (emailRegex.test(this.email) == true)
+                    {
+                        if (passwordRegex.test(this.password) == true) 
+                        {    
+                            this.signup();
+                        }
+                        else
+                        {
+                            alert('Votre mot de mot de passe doit contenir au moins : une lettre minuscule, une lettre majuscule, un chiffre, un caractère spécial et au moins 8 caractères')
+                        } 
+                    }
+                    else 
+                    {
+                        alert('Veuillez utiliser votre adresse e-mail professionelle')
+                    } 
+                }
+                else 
+                {
+                    alert('Format de nom invalide');
+                }
+            }
+            else 
+            {
+                alert('Format de prénom invalide');
+            }
+        },
+
+        signup() {   
             const userData =
             {
                 firstName: this.firstName,
@@ -18,37 +56,22 @@ export default {
                 email: this.email,
                 password: this.password,
             }
-            console.log(userData);
-             /* TO DO : ajouter sécurisation mdp et regex pour email pro*/
-             /* regex */
-            let password = this.input.password;
-            let regex = /^[a-zA-Z\-'çñàéèêëïîôüù ]{2,}$/;
-            if (!regex.test(password)) {
-               document.getElementById("passwordError").textContent = "Votre mot de passe doit contenir au moins 8 caractères, 1 majuscule, 1 minuscule et 2 chiffres et un caractère spécial";
-               return false;
-            }
-
-            
-
-
             const options =
             {
                 method: "POST",
                 headers:
-                {
+               {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(userData),
-            };
-            fetch("http://localhost:3000/groupomania/auth/signup", options)
-
+                };
+                fetch("http://localhost:3000/groupomania/auth/signup", options)
                 .then(res => res.json())
-				.then (() =>{
-                    console.log(userData);
-					alert("Veuillez vous connecter") 
-                    this.$router.push('/');				
-                })
-			.catch(error => console.log(error))
+                .then (() =>{
+                        alert("Veuillez vous connecter") 
+                        this.$router.push('/');				
+                    })
+                .catch(error => console.log(error))                               
 		}
 	}
 }
@@ -66,7 +89,7 @@ export default {
             <input type="email" name="email" v-model="email" required placeholder="nom@groupomania.fr">
             <label>Mot de passe</label>
             <input type="password" name="password" v-model="password" required placeholder="****">
-            <button type="button" @click="signup()">Inscription</button>
+            <button type="button" @click="checkInput()">Inscription</button>
         </form>
         <p>Déjà membre ? <br/> <router-link to="/">Connectez-vous !</router-link>
         </p>

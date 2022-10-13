@@ -47,7 +47,7 @@ exports.updatePost= (req, res, next) =>
     if (req.file)
     {
         newPost.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-        console.log(newPost.imageUrl);
+        //console.log(newPost.imageUrl);
     } 
 
 delete postObject._userId;

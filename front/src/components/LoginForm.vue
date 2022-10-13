@@ -38,7 +38,6 @@ export default {
                         localStorage.setItem("userId", (userId));
                         localStorage.setItem("admin", JSON.stringify(admin));
                         this.$router.push('/HomePage');
-                        
                     }
                     else 
                     {

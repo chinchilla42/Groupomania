@@ -1,29 +1,29 @@
 # INSTALLATION 
 
-## Prérequis
-- Node.js doit être isntallé sur votre machine
-## 1. Cloner ce dossier : 
-`git clone https://github.com/chinchilla42/Groupomania.git`
-- Ouvrir le dossier
+## Prerequisite
+- Node.js must be installed on your computer
+## 1. Clone this repository 
+`git clone https://github.com/chinchilla42/Groupomania.git Groupomania`
+- Open the folder
 `cd Groupomania`
 
-## 2. Le backend : 
-- Depuis le terminal, ouvrir le dossier front
+## 2. Bbackend
+- From your terminal, open the front folder
 `cd ./back`
-- Installer les dépendances avec 
+- Install dependencies with 
 `npm install`
-- Lancer le server backend
+- Start backend server
 `node server`
-(pour l'arrêter : `ctrl + c`)
+(stop with `ctrl + c`)
 
-## 3. Le frontend : 
-- Depuis le terminal, ouvrir le dossier front
+## 3. Frontend
+- From another terminal, open the back folder
 `cd ./front`
-- Installer les dépendances avec 
+- Install dependencies with 
 `npm install`
-- Lancer le server frontend
+- Start frontend server
 `npm run serve`
-(pour l'arrêter `ctrl + c`)
+(stop with `ctrl + c`)
 
-## 4. Depuis le naviageur web, ouvrir la page 
+## 4. From your web browser, go to 
 http://localhost:8080/

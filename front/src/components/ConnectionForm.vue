@@ -19,14 +19,18 @@ export default {
                 password: this.password,
             }
             console.log(userData);
-            /* TO DO : ajouter sécurisation mdp et regex pour email pro*/
+             /* TO DO : ajouter sécurisation mdp et regex pour email pro*/
+             /* regex */
+            let password = this.input.password;
+            let regex = /^[a-zA-Z\-'çñàéèêëïîôüù ]{2,}$/;
+            if (!regex.test(password)) {
+               document.getElementById("passwordError").textContent = "Votre mot de passe doit contenir au moins 8 caractères, 1 majuscule, 1 minuscule et 2 chiffres et un caractère spécial";
+               return false;
+            }
+
             
-            // let password = this.input.password;
-            // let regex = /^[a-zA-Z\-'çñàéèêëïîôüù ]{2,}$/;
-            // if (!regex.test(password)) {
-            //    document.getElementById("passwordError").textContent = "Votre mot de passe doit contenir au moins 8 caractères, 1 majuscule, 1 minuscule et 2 chiffres et un caractère spécial";
-            //    return false;
-            // }
+
+
             const options =
             {
                 method: "POST",

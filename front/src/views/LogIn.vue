@@ -1,5 +1,5 @@
 <script>
-import NavHeader from '@/components/NavHeader.vue'
+import NavConnect from '@/components/NavConnect.vue'
 import LoginForm from '../components/LoginForm.vue'
 
 export default 
@@ -7,7 +7,7 @@ export default
     name: "SignIn",
     components: 
     { 
-        NavHeader, 
+        NavConnect, 
         LoginForm 
     },
     data() 
@@ -24,7 +24,7 @@ export default
 
 <template>
     <div class="container">
-        <NavHeader :isConnected="isConnected" />
+        <NavConnect />
         <main>
             <LoginForm />
         </main>

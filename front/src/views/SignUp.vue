@@ -1,27 +1,21 @@
 
 <script>
-import NavHeader from '@/components/NavHeader.vue'
+import NavConnect from '@/components/NavConnect.vue'
 import ConnectionForm from '../components/ConnectionForm.vue'
 export default 
 {
     name: "SignUp",
     components: 
     { 
-        NavHeader, 
+        NavConnect, 
         ConnectionForm 
-    },
-    data() 
-    {
-        return {
-            isConnected: false,
-        }
     },
 }
 </script> 
 
 <template>
     <div class="container">
-        <NavHeader :isConnected="isConnected" />
+        <NavConnect />
         <main>
             <ConnectionForm />
         </main>

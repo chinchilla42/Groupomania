@@ -1,6 +1,6 @@
 <script>
 export default {
-	name: 'NavHeader',
+	name: 'NavHome',
 
     methods: {
         /* déconnecter l'utilisateur */
@@ -9,27 +9,18 @@ export default {
             localStorage.clear();
             this.$router.push('/');	
             console.log("déconnexion");
-        },
-  
-
-
+        },  
     },
-    props:["isConnected"],
 };
 </script>
 
 <template>
     <header>
         <img src="../assets/icon-left-font.png" alt="Logo de Groupomania">
-        <nav v-if="isConnected">
+        <nav>
             <ul> 
+                <li><router-link to="/HomePage"><i class="fas fa-house-user"></i>Accueil</router-link></li>
                 <li @click="logout()"><i class="fas fa-power-off"></i> Déconnexion</li>  
-            </ul>
-        </nav>
-        <nav v-if="!isConnected">
-            <ul >
-                <li><router-link to="/signup">Créer un compte</router-link></li>
-                <li><router-link to="/">Se connecter</router-link></li>
             </ul>
         </nav>
     </header>

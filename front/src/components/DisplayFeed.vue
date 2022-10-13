@@ -126,12 +126,10 @@ export default
 						<div class="post__image" v-if="post.imageUrl">
 							<img :src="post.imageUrl">
 						</div>
-						<div class="post__reaction">{{ post.likes }} personne(s) <i class="fas fa-thumbs-up"></i> ceci
-						</div>
-						<!-- <div class="postLiked" v-if="postLiked == 'true'"> -->
-						<div>
-							<div class="like" @click="likePost(post._id)" v-if="admin == 'false'"><i
-									class="fas fa-thumbs-up"></i> J'aime</div>
+						<div class="post__reaction">
+							{{ post.likes }} 
+							<span class="like" @click="likePost(post._id)" v-if="admin == 'false'">
+								<i class="fas fa-thumbs-up"></i></span>
 						</div>
 						<div class="change" v-if="post.userId == userId || admin == 'true'">
 							<div class="modify_post">
@@ -183,16 +181,20 @@ export default
 }
 
 .post__reaction {
-	padding-top: 10px;
-	padding-left: 2px;
+	align-self: flex-end;
+	align-items: baseline;
+	padding: 5px;
 }
 
-.like,
+.like {
+	padding: 5px;
+	margin: 5px;
+}
+
 .modify__post,
 .delete__post {
 	color: #FD2D01;
 	padding: 5px;
-
 }
 
 .postLiked {
@@ -213,22 +215,9 @@ main img {
 	object-fit: cover;
 	max-height: 100%;
 	height: auto;
-	;
 	max-width: 100%;
-	width: auto;
-
 }
 
-.like {
-	padding: 10px;
-	margin: 10px;
-	text-align: right;
 
 
-
-}
-
-.like:hover {
-	font-weight: bold;
-}
 </style>

@@ -71,7 +71,7 @@ export default
           console.log(res);
           alert("Votre message a été publié avec succès");
           this.toggleIsCreate;
-          this.getAllPosts(); 
+          document.location.reload(); 
         })
         .catch(error => console.log('error', error))))
       
@@ -107,7 +107,7 @@ export default
           console.log(resData);
           alert("Votre message a été publié avec succès");
           this.toggleIsCreate;
-          this.getAllPosts(); 
+          document.location.reload(); 
         })
         .catch(error => console.log('error message: ', error))
       }

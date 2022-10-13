@@ -1,5 +1,5 @@
 <script>
-import NavHeader from '@/components/NavHeader.vue'
+import NavHome from '@/components/NavHome.vue'
 import CreatePost from '@/components/CreatePost.vue'
 import DisplayFeed from '@/components/DisplayFeed.vue'
 import AdminPost from '@/components/AdminPost.vue'
@@ -8,7 +8,7 @@ export default {
   name: 'HomePage',
 
   components: {
-    NavHeader,
+    NavHome,
     CreatePost ,
     DisplayFeed,
     AdminPost,
@@ -33,7 +33,6 @@ export default {
       admin:  localStorage.getItem('admin'),
       user: {},
       author: "",
-      isConnected: true,
     }
   },
   
@@ -67,7 +66,7 @@ export default {
 
 <template>
   <div class="container">
-    <NavHeader :isConnected="isConnected" />
+    <NavHome />
     <main>
       <h1 > Bienvenue, {{ user.firstName }} {{ user.lastName}} !</h1>
       <CreatePost :author=author v-if="admin == 'false'"/>

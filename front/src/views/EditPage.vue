@@ -1,15 +1,15 @@
 <script>
-import NavHeader from '@/components/NavHeader.vue'
+import NavHome from '@/components/NavHome.vue'
 
 export default {
     name: "EditPage",
 
     components: {
-        NavHeader
+        NavHome
     },
+
     data() {
         return {
-            isConnected: true,
             postId: this.$route.params.id,
             content: "",
             date: "",
@@ -24,10 +24,16 @@ export default {
     created() {
         this.getOnePost(this.postId);
     },
-
+  beforeUpdate(){
+        if(localStorage.getItem("token") == null)
+        {
+            this.$router.push("/");
+        } else{
+            console.log("ok");
+        }
+    },
     methods:
     {
-
         /* récupérer un post  grâce à son ID*/
         getOnePost(id) {
             
@@ -57,8 +63,6 @@ export default {
       if (this.file && this.file['type'].split('/')[0] === 'image') 
       {
         this.imagePreview = URL.createObjectURL(this.file);
-        console.log(this.imagePreview);
-        this.imageUrl = this.file;
       }
       else 
       {
@@ -143,7 +147,7 @@ export default {
 
 <template>
     <div class="container">
-        <NavHeader />
+        <NavHome />
         <div class="edit_post">
             <form name="editPost" id="editPost">
                 <textarea type="text" aria-label="contenu" v-model="content"></textarea>
@@ -167,3 +171,15 @@ export default {
         </div>
     </div>
 </template>
+
+<style>
+.post__image img {
+	margin-left: auto;
+	margin-right: auto;
+	object-fit: cover;
+	max-height: 100%;
+	height: auto;
+	max-width: 100%;
+}
+
+</style>

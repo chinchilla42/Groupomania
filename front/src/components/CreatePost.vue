@@ -1,6 +1,5 @@
 <script>
 
-//import getAllPosts from './DisplayFeed.vue';
 export default 
 {
   name: 'CreatePost',
@@ -19,12 +18,12 @@ export default
   props:["author"],
   methods: 
   {
-    /* afficher le formulaire de création de post */
+    /* display creating post form */
     toggleIsCreate()
     {
       this.isCreate = !this.isCreate;
     },
-    /*récupérer l'image ajoutée au post */
+    /* get image added to post */
     addImg()
     {
       this.file = this.$refs.file.files[0];
@@ -32,20 +31,21 @@ export default
       {
         this.imagePreview = URL.createObjectURL(this.file);
         console.log(this.imagePreview);
-        //this.imageUrl = this.file;
       }
       else 
       {
         this.$refs.file.value = null;
       }
     },
-    /*envoyer le post au back */
+    /* send post to backend back */
     publishContent() {
-      if (this.content == "" && this.file === "") // si le post vide
+      /* if post is empty */
+      if (this.content == "" && this.file === "") 
       {
         alert("Votre publication est vide");
       }
-      else if (this.file === "") // post sans image 
+      /* post without image*/
+      else if (this.file === "") 
       {
          
         const newContent = {
@@ -76,7 +76,8 @@ export default
         .catch(error => console.log('error', error))))
       
       }
-      else // post avec image *
+      /* post with image */
+      else 
       {
         const newPost = new FormData();
           newPost.append("userId", localStorage.getItem("userId"));
@@ -94,7 +95,6 @@ export default
           body: newPost, 
           headers: 
           {
-            //"Content-Type": "multipart/form-data",
             "Authorization": "Bearer " + localStorage.getItem("token"),
           }
         };
@@ -114,7 +114,6 @@ export default
     },
   }
 }
- 
 </script>
 
 
@@ -165,5 +164,4 @@ textarea {
   margin: 5px;
   padding: 5px;
 }
-
 </style>

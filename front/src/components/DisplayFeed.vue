@@ -14,7 +14,7 @@ export default
 
 		methods:
 		{
-			/* récupérer tous les posts à afficher */
+			/* get all posts ti display */
 			getAllPosts() {
 				const url = "http://localhost:3000/groupomania/post";
 				const options = {
@@ -32,9 +32,11 @@ export default
 					.catch(error => console.log(error));
 			},
 
-			/* supprimer un post */
+			/* delete a post */
 			deletePost(id) {
-				if (confirm("Voulez vous supprimer ce post ? ")) {
+			console.log("post id: " + id);
+			console.log("user id: " + this.userId);
+				if (confirm("Voulez vous supprimer cette publication ? ")) {
 					fetch(`http://localhost:3000/groupomania/post/${id}`,
 						{
 							method: "DELETE",
@@ -56,7 +58,7 @@ export default
 				}
 			},
 
-			/* aimer un post*/
+			/* like a post*/
 			likePost(id) {
 				const newLike = {
 					like: 1,
@@ -80,29 +82,6 @@ export default
 						.then(res => { console.log(res); this.getAllPosts(); })
 						.catch(error => console.log('error', error))))
 			},
-
-			/*montrer que l'utilisateur a liké le post */
-			checkLike(id) {
-				const url = `http://localhost:3000/groupomania/post/${id}/like`;
-				const options = {
-					method: 'GET',
-					headers:
-					{
-						"Content-Type": "application/json",
-						"Authorization": "Bearer " + localStorage.getItem("token"),
-					}
-				};
-				fetch(url, options)
-					.then(res => {
-						if (res.data.message === 'YES') {
-							this.postLiked = true;
-						}
-						else {
-							this.postLiked = false;
-						}
-					})
-					.catch(error => console.log(error));
-			}
 		},
 
 		mounted() {
@@ -217,7 +196,4 @@ main img {
 	height: auto;
 	max-width: 100%;
 }
-
-
-
 </style>

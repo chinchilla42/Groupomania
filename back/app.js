@@ -8,6 +8,12 @@ const express = require('express');
 /* import Mongoose to handle data base */
 const mongoose = require('mongoose');
 
+/* import Helmet to secure http headers */
+const helmet = require('helmet');
+
+/* import mong sanitize to avoid sql injections */
+const mongoSanitize = require('express-mongo-sanitize');
+
 /* Access to file system path */
 const path = require('path');
 
@@ -20,6 +26,8 @@ const postRoutes = require('./routes/post');
 
 /* Create express app and call dependancies */
 app.use(express.json());
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+app.use(mongoSanitize()); 
 
 /* Manage CORS */
 app.use((req, res, next) => {
@@ -30,7 +38,6 @@ app.use((req, res, next) => {
 });
 
 /* Connect to Mongoose to manage Mongo DB data base */
-//mongoose.connect('mongodb+srv://test:crash25@cluster0.jftm1pm.mongodb.net/?retryWrites=true&w=majority',
 mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.jftm1pm.mongodb.net/?retryWrites=true&w=majority`,
 { 
     useNewUrlParser: true,
@@ -45,7 +52,6 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 /* Save routes */
 app.use('/groupomania/auth', userRoutes);
 app.use('/groupomania/post', postRoutes);
-
 
 /* Export Express app */
 module.exports = app;

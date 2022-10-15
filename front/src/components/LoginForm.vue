@@ -9,6 +9,7 @@ export default {
     },
     methods:
     {
+        /* login */
         login() 
         {
             const user =
@@ -64,3 +65,4 @@ export default {
         </p>
     </div>
 </template>
+

@@ -39,7 +39,7 @@ export default {
   methods:
   {
 
-    /*récupérer les info de l'utilisateur connecté*/ 
+    /* get data about current user */ 
     getUserInfo() 
     {
       const url = "http://localhost:3000/groupomania/auth/user/" + this.userId;
@@ -134,7 +134,7 @@ h2{
         text-align: center;
         margin: 0;
     }
-    img {
+    header img {
     object-fit: cover;
     width: 100%;
     height: 100px;

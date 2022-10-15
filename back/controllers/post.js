@@ -4,8 +4,6 @@ const Post = require('../models/Post');
 /* import fs package to access file system mangement */
 const fs = require('fs');
 
-const jwt = require("jsonwebtoken");
-
 /* POST: create a post */
 exports.createPost = (req, res, next) => {
     const postObject = req.body;
@@ -49,7 +47,6 @@ exports.updatePost= (req, res, next) =>
     if (req.file)
     {
         newPost.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-        //console.log(newPost.imageUrl);
     } 
 
     delete postObject._userId;
@@ -72,15 +69,23 @@ exports.updatePost= (req, res, next) =>
 };
 
  /* DELETE: delete a post */
-exports.deletePost = (req, res, next) => {
-    Post.findOne({ where: { id: req.params.id } })
-        .then(post => 
-        {
-            // console.log (post.userId);
-            // console.log (req.auth.userId);
-            // if (post.userId == req.auth.userId || req.auth.admin) 
-            //  {
-                if (post.imageUrl) 
+ exports.deletePost= (req, res, next) => 
+ {
+    let postId = req.params.id;
+    let userId = req.auth.userId;
+    console.log("post id: " + postId);
+    console.log("user id: " + userId);  
+    Post.findOne({ _id: req.params.id })
+     .then(post => 
+     {
+        console.log("post userid: " + post.userId);
+        console.log("auth userid: " + req.auth.userId);
+        console.log("admin : " + req.auth.admin);
+         
+
+         if ((post.userId == req.auth.userId) || req.auth.admin == true)
+         {
+            if (post.imageUrl) 
                 {
                     const filename = post.imageUrl.split('/images/')[1];
                     fs.unlink(`./images/${filename}`, () => {
@@ -95,17 +100,14 @@ exports.deletePost = (req, res, next) => {
                         .then(() => res.status(200).json({ message: 'Publication supprimée' }))
                         .catch(error => { res.status(401).json({ message: 'erreur 401' }) });
                 }
-            // }
-            //  else 
-            // {
-            //         console.log(id);
-            //         console.log (req.auth.admin);
-            //         console.log (req.auth.userId);
-            //     res.status(401).json({ message: 'Non autorisé' });
-            // }
-        })
-        .catch((error) => { res.status(500).json({ message: 'erreur 500' }); });
-};
+         }
+         else
+         {
+            res.status(401).json({message: 'Utilisateur non autorisé'});
+         }
+     })      
+     .catch((error) => {res.status(500).json({error: error});});
+ };
 
 /* POST: like a post */
 exports.likePost = (req, res, next) => 
@@ -148,28 +150,4 @@ exports.likePost = (req, res, next) =>
         .catch((error) => res.status(400).json({ error }))
         }
     })
-}
-
-/*check post like */
-exports.checkPostLike = (req, res, next) => 
-{
-    const userId = req.body.userId;
-    const postId = req.params.id;
-    Post.findOne
-    (
-        { _id: postId }
-    )
-    .then((post) => 
-    {
-        if (post.usersLiked.includes(userId)) 
-        {
-            return res.status(200).json({message: 'YES'})
-        }
-        else
-        {
-            return res.status(200).json({message: 'NO'})
-        }
-    })
-    .catch((error) => res.status(400).json({ error }))
-
 }

@@ -25,7 +25,7 @@ export default {
     created() {
         this.getOnePost(this.postId);
     },
-  beforeUpdate(){
+    beforeUpdate() {
         if(localStorage.getItem("token") == null)
         {
             this.$router.push("/");
@@ -33,9 +33,10 @@ export default {
             console.log("ok");
         }
     },
+
     methods:
     {
-        /* récupérer un post  grâce à son ID*/
+        /* get a post using its ID*/
         getOnePost(id) {
             
             const url = `http://localhost:3000/groupomania/post/${id}`;
@@ -57,30 +58,31 @@ export default {
                 })
                 .catch(error => console.log(error));
         },
-
+        /* add file to post */
         addImg()
-    {
-      this.file = this.$refs.file.files[0];
-      if (this.file && this.file['type'].split('/')[0] === 'image') 
-      {
-        this.imagePreview = URL.createObjectURL(this.file);
-      }
-      else 
-      {
-        this.$refs.file.value = null;
-      }
-    },
+        {
+            this.file = this.$refs.file.files[0];
+            if (this.file && this.file['type'].split('/')[0] === 'image') 
+            {
+                this.imagePreview = URL.createObjectURL(this.file);
+            }
+            else 
+            {
+                this.$refs.file.value = null;
+            }
+        },
 
-        /* modifier un post*/
+        /* edit a post*/
         editPost() 
         {
-            if (this.content == "" && this.file === "") // si le post vide
+            /* if empty */
+            if (this.content == "" && this.file === "") 
             {
                  alert("Votre publication est vide");
             }
-            else if (this.file === "") // post sans image 
+            /* post with no image */
+            else if (this.file === "")  
             {
-
                 const newContent = {
                     userId: this.userId,
                     author: this.author,
@@ -108,7 +110,8 @@ export default {
                         .catch(error => console.log('error', error))))
 
            }
-            else // post avec image *
+           /* post with image */
+            else 
             {
                 const newPost = new FormData();
                 newPost.append("userId", localStorage.getItem("userId"));
@@ -174,6 +177,15 @@ export default {
 </template>
 
 <style>
+.edit_post {
+    display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin:  10px ;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px 2px #4E5166;  
+}
 .post__image img {
 	margin-left: auto;
 	margin-right: auto;
@@ -181,5 +193,11 @@ export default {
 	max-height: 100%;
 	height: auto;
 	max-width: 100%;
+}
+
+@media (max-width: 767px) {
+    textarea {
+        height: auto;
+    }
 }
 </style>

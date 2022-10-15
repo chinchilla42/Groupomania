@@ -3,7 +3,7 @@ export default {
 	name: 'NavHome',
 
     methods: {
-        /* déconnecter l'utilisateur */
+        /* logout user */
         logout()
         {
             localStorage.clear();
@@ -33,10 +33,6 @@ header{
     justify-content: center;
     align-items: center;
 }
-#test{
-    display: none;
-}
-
 img {
     object-fit: cover;
     width: 60%;
@@ -46,15 +42,12 @@ img {
 ul {
     list-style-type: none;  
 }
-
-li{
+li {
     margin: 5px;
-}
-a {
   text-decoration: none;
   color: inherit;
 }
-a:hover{
+li:hover{
     color:#FD2D01;
 }
 </style>

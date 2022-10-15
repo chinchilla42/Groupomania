@@ -7,7 +7,7 @@
 - Open the folder
 `cd Groupomania`
 
-## 2. Bbackend
+## 2. Backend
 - From your terminal, open the back folder
 `cd ./back`
 - Install dependencies with 

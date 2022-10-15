@@ -8,7 +8,7 @@
 `cd Groupomania`
 
 ## 2. Bbackend
-- From your terminal, open the front folder
+- From your terminal, open the back folder
 `cd ./back`
 - Install dependencies with 
 `npm install`
@@ -17,7 +17,7 @@
 (stop with `ctrl + c`)
 
 ## 3. Frontend
-- From another terminal, open the back folder
+- From another terminal, open the front folder
 `cd ./front`
 - Install dependencies with 
 `npm install`

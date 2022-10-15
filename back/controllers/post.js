@@ -1,8 +1,10 @@
 /* Import Post model */
-const Post = require('../models/Post')
+const Post = require('../models/Post');
 
 /* import fs package to access file system mangement */
 const fs = require('fs');
+
+const jwt = require("jsonwebtoken");
 
 /* POST: create a post */
 exports.createPost = (req, res, next) => {
@@ -50,54 +52,60 @@ exports.updatePost= (req, res, next) =>
         //console.log(newPost.imageUrl);
     } 
 
-delete postObject._userId;
+    delete postObject._userId;
    Post.findOne({ _id: req.params.id })
    .then( post => 
    {
-       if (post.userId != req.auth.userId)
-       {
-           res.status(401).json({message: 'Non autorisé'});
-       }
-       else
+        if (post.userId == req.auth.userId || req.auth.admin)
        {
            Post.updateOne({ _id: req.params.id}, { $set: newPost, _id: req.params.id })
            .then (() => res.status(200).json({ message: 'Publication modifiée'}))
            .catch(error => res.status(401).json({ error }));
        }
+       else
+       {
+        console.log(req.auth.admin);
+         res.status(401).json({message: 'Non autorisé'});
+    }
    })
    .catch ((error) => {res.status(400).json({ error})});
 };
 
  /* DELETE: delete a post */
- exports.deletePost= (req, res, next) => 
- {
-     Post.findOne( {where: {id : req.params.id}})
-     .then(post => 
-     {
-         if (post.userId === req.body.userId || req.body.isAdmin)
-         {
-            res.status(401).json({message: 'Non autorisé'});
-         }
-         if (post.imageUrl)
-         {
-            const filename = post.imageUrl.split('/images/')[1];
-            fs.unlink(`./images/${filename}`, () =>
-               {
-                 Post.deleteOne({ _id: req.params.id })
-                 .then (() => res.status(200).json({ message: 'Publication supprimée'}))
-                 .catch( error => {res.status(401).json({ message: 'erreur 401'})});
-               })
-        }
-        else
+exports.deletePost = (req, res, next) => {
+    Post.findOne({ where: { id: req.params.id } })
+        .then(post => 
         {
-                Post.deleteOne({ _id: req.params.id })
-                         .then (() => res.status(200).json({ message: 'Publication supprimée'}))
-                         .catch( error => {res.status(401).json({ message: 'erreur 401'})});
-        }
-    })      
-    
-     .catch((error) => {res.status(500).json({message: 'erreur 500'});});
- };
+            // console.log (post.userId);
+            // console.log (req.auth.userId);
+            // if (post.userId == req.auth.userId || req.auth.admin) 
+            //  {
+                if (post.imageUrl) 
+                {
+                    const filename = post.imageUrl.split('/images/')[1];
+                    fs.unlink(`./images/${filename}`, () => {
+                        Post.deleteOne({ _id: req.params.id })
+                            .then(() => res.status(200).json({ message: 'Publication supprimée' }))
+                            .catch(error => { res.status(401).json({ message: 'erreur 401' }) });
+                    })
+                }
+                else 
+                {
+                    Post.deleteOne({ _id: req.params.id })
+                        .then(() => res.status(200).json({ message: 'Publication supprimée' }))
+                        .catch(error => { res.status(401).json({ message: 'erreur 401' }) });
+                }
+            // }
+            //  else 
+            // {
+            //         console.log(id);
+            //         console.log (req.auth.admin);
+            //         console.log (req.auth.userId);
+            //     res.status(401).json({ message: 'Non autorisé' });
+            // }
+        })
+        .catch((error) => { res.status(500).json({ message: 'erreur 500' }); });
+};
 
 /* POST: like a post */
 exports.likePost = (req, res, next) => 

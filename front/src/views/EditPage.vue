@@ -16,6 +16,7 @@ export default {
             imageUrl: "",
             file: "",
             userId: localStorage.getItem('userId'),
+            admin: localStorage.getItem('admin'),
             newImage: "",
             newContent: "",
             imagePreview: null,
@@ -181,5 +182,4 @@ export default {
 	height: auto;
 	max-width: 100%;
 }
-
 </style>

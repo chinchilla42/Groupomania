@@ -1,3 +1,7 @@
+/* import dotenv */
+const dotenv = require('dotenv');
+dotenv.config();
+
 /* import Express */
 const express = require('express');
 
@@ -26,8 +30,9 @@ app.use((req, res, next) => {
 });
 
 /* Connect to Mongoose to manage Mongo DB data base */
-mongoose.connect('mongodb+srv://test:crash25@cluster0.jftm1pm.mongodb.net/?retryWrites=true&w=majority',
-  { 
+//mongoose.connect('mongodb+srv://test:crash25@cluster0.jftm1pm.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.jftm1pm.mongodb.net/?retryWrites=true&w=majority`,
+{ 
     useNewUrlParser: true,
     useUnifiedTopology: true
    })

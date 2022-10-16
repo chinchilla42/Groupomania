@@ -72,17 +72,10 @@ exports.updatePost= (req, res, next) =>
  exports.deletePost= (req, res, next) => 
  {
     let postId = req.params.id;
-    let userId = req.auth.userId;
-    console.log("post id: " + postId);
-    console.log("user id: " + userId);  
+    let userId = req.auth.userId;  
     Post.findOne({ _id: req.params.id })
      .then(post => 
      {
-        console.log("post userid: " + post.userId);
-        console.log("auth userid: " + req.auth.userId);
-        console.log("admin : " + req.auth.admin);
-         
-
          if ((post.userId == req.auth.userId) || req.auth.admin == true)
          {
             if (post.imageUrl) 

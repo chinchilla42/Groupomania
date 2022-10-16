@@ -14,7 +14,7 @@ export default
 
 		methods:
 		{
-			/* get all posts ti display */
+			/* get all posts to display */
 			getAllPosts() {
 				const url = "http://localhost:3000/groupomania/post";
 				const options = {
@@ -34,8 +34,6 @@ export default
 
 			/* delete a post */
 			deletePost(id) {
-			console.log("post id: " + id);
-			console.log("user id: " + this.userId);
 				if (confirm("Voulez vous supprimer cette publication ? ")) {
 					fetch(`http://localhost:3000/groupomania/post/${id}`,
 						{
